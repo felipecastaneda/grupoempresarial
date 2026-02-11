@@ -29,6 +29,15 @@ export function Logo({ className, ...props }: React.SVGProps<SVGSVGElement>) {
                 />
                 {/* I for Intelligence, using the accent color */}
                 <circle cx="50" cy="55" r="8" fill="hsl(var(--accent))" />
+                <line
+                    x1="42"
+                    y1="70"
+                    x2="58"
+                    y2="70"
+                    stroke="hsl(var(--accent))"
+                    strokeWidth="6"
+                    strokeLinecap="round"
+                />
             </g>
         </svg>
     );
