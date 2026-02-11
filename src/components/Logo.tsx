@@ -28,14 +28,14 @@ export function Logo({ className, ...props }: React.SVGProps<SVGSVGElement>) {
                     strokeLinecap="round"
                 />
                 {/* I for Intelligence, using the accent color */}
-                <circle cx="50" cy="55" r="8" fill="hsl(var(--accent))" />
+                <circle cx="50" cy="55" r="6" fill="hsl(var(--accent))" />
                 <line
                     x1="50"
-                    y1="67"
+                    y1="70"
                     x2="50"
-                    y2="77"
+                    y2="84"
                     stroke="hsl(var(--accent))"
-                    strokeWidth="6"
+                    strokeWidth="10"
                     strokeLinecap="round"
                 />
             </g>
