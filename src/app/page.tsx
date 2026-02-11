@@ -1,16 +1,38 @@
+"use client";
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Building2, Code, Headset } from 'lucide-react';
+import { Code, Headset } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Logo } from '@/components/Logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
+import React from 'react';
+import Autoplay from "embla-carousel-autoplay";
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find(p => p.id === "hero");
+  const [api, setApi] = React.useState<CarouselApi>()
+  const [current, setCurrent] = React.useState(0)
+  const [count, setCount] = React.useState(0)
+  const plugin = React.useRef(
+    Autoplay({ delay: 6000, stopOnInteraction: true })
+  )
+
+  React.useEffect(() => {
+    if (!api) {
+      return
+    }
+
+    setCount(api.scrollSnapList().length)
+    setCurrent(api.selectedScrollSnap())
+
+    api.on("select", () => {
+      setCurrent(api.selectedScrollSnap())
+    })
+  }, [api])
   
   return (
     <div className="flex flex-col min-h-screen">
@@ -50,7 +72,13 @@ export default function Home() {
 
         <section id="about" className="py-16 md:py-24 bg-background">
           <div className="container mx-auto px-4">
-            <Carousel className="w-full max-w-6xl mx-auto">
+            <Carousel 
+              setApi={setApi}
+              plugins={[plugin.current]}
+              className="w-full max-w-6xl mx-auto"
+              onMouseEnter={plugin.current.stop}
+              onMouseLeave={plugin.current.reset}
+            >
               <CarouselContent>
                 <CarouselItem>
                   <div className="p-1">
@@ -130,6 +158,17 @@ export default function Home() {
               </CarouselContent>
               <CarouselPrevious />
               <CarouselNext />
+               <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex space-x-2">
+                {Array.from({ length: count }).map((_, index) => (
+                  <Button
+                    key={index}
+                    variant="ghost"
+                    size="icon"
+                    className={`h-2 w-2 rounded-full p-0 ${index === current ? "bg-primary" : "bg-muted-foreground/50"}`}
+                    onClick={() => api?.scrollTo(index)}
+                  />
+                ))}
+              </div>
             </Carousel>
           </div>
         </section>
