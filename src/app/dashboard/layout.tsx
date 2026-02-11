@@ -8,16 +8,22 @@ import {
   Sidebar,
   SidebarHeader,
   SidebarContent,
-  SidebarFooter,
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
   SidebarInset,
   SidebarTrigger,
-  useSidebar,
 } from '@/components/ui/sidebar';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   LayoutDashboard,
   Megaphone,
@@ -43,14 +49,6 @@ const navItems = [
 
 function DashboardNav() {
   const pathname = usePathname();
-  const { user, logout } = useAuth();
-  const { state: sidebarState } = useSidebar();
-
-  const employee = employees.find(e => e.email === user?.email);
-  const avatar = PlaceHolderImages.find(p => p.id === employee?.avatar);
-  
-  const displayName = employee?.name || user?.displayName || 'Employee';
-  const displayEmail = user?.email || '';
 
   return (
     <>
@@ -80,29 +78,14 @@ function DashboardNav() {
           ))}
         </SidebarMenu>
       </SidebarContent>
-      <SidebarFooter className="border-t border-sidebar-border">
-        <div className="flex items-center gap-2">
-          <Avatar className="h-8 w-8">
-            {avatar && <AvatarImage src={avatar.imageUrl} alt={displayName} />}
-            <AvatarFallback>{displayName?.charAt(0)}</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col overflow-hidden group-data-[collapsible=icon]:hidden">
-            <span className="text-sm font-medium truncate">{displayName}</span>
-            <span className="text-xs text-sidebar-foreground/70 truncate">{displayEmail}</span>
-          </div>
-        </div>
-        <Button variant="ghost" size="icon" className="w-full justify-start h-10 group-data-[collapsible=icon]:w-10" onClick={logout} aria-label="Logout">
-          <LogOut className="h-4 w-4" />
-          <span className="group-data-[collapsible=icon]:hidden ml-2">Logout</span>
-        </Button>
-      </SidebarFooter>
     </>
   );
 }
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { user, loading } = useAuth();
+  const { user, loading, logout } = useAuth();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     if (!loading && !user) {
@@ -118,6 +101,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
+  const employee = employees.find(e => e.email === user?.email);
+  const avatar = PlaceHolderImages.find(p => p.id === employee?.avatar);
+  const displayName = employee?.name || user?.displayName || user.email || 'Employee';
+
   return (
     <SidebarProvider>
       <Sidebar variant="inset" side="left" collapsible="icon">
@@ -129,6 +116,28 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <h1 className="text-lg font-semibold md:text-xl font-headline flex-1">
             {navItems.find(item => item.href === usePathname())?.label || 'Dashboard'}
           </h1>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
+                <Avatar className="h-8 w-8">
+                  {avatar && <AvatarImage src={avatar.imageUrl} alt={displayName} />}
+                  <AvatarFallback>{displayName?.charAt(0)}</AvatarFallback>
+                </Avatar>
+                <span className="sr-only">Toggle user menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>
+                <p className="font-medium">{displayName}</p>
+                <p className="text-xs text-muted-foreground font-normal">{user.email}</p>
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={logout}>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Logout</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </header>
         <main className="flex-1 p-4 lg:p-6">{children}</main>
       </SidebarInset>
