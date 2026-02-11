@@ -4,8 +4,9 @@ export function Logo({
   className,
   primaryColor = "hsl(var(--primary))",
   accentColor = "hsl(var(--accent))",
+  showText = false,
   ...props
-}: React.SVGProps<SVGSVGElement> & { primaryColor?: string; accentColor?: string }) {
+}: React.SVGProps<SVGSVGElement> & { primaryColor?: string; accentColor?: string, showText?: boolean }) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -13,7 +14,7 @@ export function Logo({
             className={cn("h-8 w-8", className)}
             {...props}
         >
-            <g>
+            <g transform={showText ? "translate(0, -10)" : "translate(0, 0)"}>
                 {/* A for Application */}
                 <path
                     d="M20 80 L50 20 L80 80"
@@ -44,6 +45,19 @@ export function Logo({
                     strokeLinecap="round"
                 />
             </g>
+            {showText && (
+                <text
+                    x="50"
+                    y="90"
+                    textAnchor="middle"
+                    fontSize="18"
+                    fill={primaryColor}
+                    fontFamily="var(--font-headline), sans-serif"
+                    fontWeight="600"
+                >
+                    ai.ai
+                </text>
+            )}
         </svg>
     );
 }

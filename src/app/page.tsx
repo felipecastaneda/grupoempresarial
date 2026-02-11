@@ -34,8 +34,8 @@ export default function Home() {
                   className="h-24 w-24"
                   primaryColor="hsl(var(--primary-foreground))"
                   accentColor="hsl(var(--accent))"
+                  showText={true}
                 />
-                <p className="mt-2 text-lg font-semibold text-primary-foreground/90">ai.ai</p>
               </div>
               <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground font-headline">
                 Application Intelligence
