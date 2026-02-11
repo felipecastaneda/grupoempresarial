@@ -34,9 +34,6 @@ export default function Home() {
               <p className="mt-4 text-lg md:text-xl text-primary-foreground/90">
                 Engineering the Future of Software, Today.
               </p>
-              <Button asChild size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
-                <Link href="/login">Employee Login</Link>
-              </Button>
             </div>
           </div>
         </section>
