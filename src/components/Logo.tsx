@@ -31,9 +31,9 @@ export function Logo({ className, ...props }: React.SVGProps<SVGSVGElement>) {
                 <circle cx="50" cy="55" r="8" fill="hsl(var(--accent))" />
                 <line
                     x1="50"
-                    y1="65"
+                    y1="67"
                     x2="50"
-                    y2="75"
+                    y2="77"
                     stroke="hsl(var(--accent))"
                     strokeWidth="6"
                     strokeLinecap="round"
