@@ -1,0 +1,293 @@
+{
+  "entities": {
+    "Announcement": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Announcement",
+      "type": "object",
+      "description": "Represents a company-wide announcement.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the announcement."
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the announcement."
+        },
+        "content": {
+          "type": "string",
+          "description": "Content of the announcement."
+        },
+        "authorId": {
+          "type": "string",
+          "description": "Reference to the Employee who created the announcement. (Relationship: Employee 1:N Announcement)"
+        },
+        "datePublished": {
+          "type": "string",
+          "description": "Date and time the announcement was published.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "title",
+        "content",
+        "authorId",
+        "datePublished"
+      ]
+    },
+    "Payroll": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Payroll",
+      "type": "object",
+      "description": "Represents an employee's payroll information.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the payroll record."
+        },
+        "employeeId": {
+          "type": "string",
+          "description": "Reference to the Employee this payroll record belongs to. (Relationship: Employee 1:N Payroll)"
+        },
+        "payPeriodStart": {
+          "type": "string",
+          "description": "Start date of the pay period.",
+          "format": "date-time"
+        },
+        "payPeriodEnd": {
+          "type": "string",
+          "description": "End date of the pay period.",
+          "format": "date-time"
+        },
+        "grossPay": {
+          "type": "number",
+          "description": "Gross pay for the pay period."
+        },
+        "netPay": {
+          "type": "number",
+          "description": "Net pay for the pay period."
+        },
+        "deductions": {
+          "type": "number",
+          "description": "Total deductions for the pay period."
+        }
+      },
+      "required": [
+        "id",
+        "employeeId",
+        "payPeriodStart",
+        "payPeriodEnd",
+        "grossPay",
+        "netPay",
+        "deductions"
+      ]
+    },
+    "Employee": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Employee",
+      "type": "object",
+      "description": "Represents an employee of the company.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the employee."
+        },
+        "firstName": {
+          "type": "string",
+          "description": "First name of the employee."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "Last name of the employee."
+        },
+        "email": {
+          "type": "string",
+          "description": "Email address of the employee.",
+          "format": "email"
+        },
+        "departmentId": {
+          "type": "string",
+          "description": "Reference to the Department the employee belongs to. (Relationship: Department 1:N Employee)"
+        },
+        "jobTitle": {
+          "type": "string",
+          "description": "Job title of the employee."
+        },
+        "phoneNumber": {
+          "type": "string",
+          "description": "The phone number of the employee."
+        }
+      },
+      "required": [
+        "id",
+        "firstName",
+        "lastName",
+        "email",
+        "departmentId",
+        "jobTitle"
+      ]
+    },
+    "Department": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Department",
+      "type": "object",
+      "description": "Represents a department within the company.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the department."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the department."
+        },
+        "description": {
+          "type": "string",
+          "description": "Description of the department."
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "description"
+      ]
+    },
+    "Document": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Document",
+      "type": "object",
+      "description": "Represents a stored document.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the document."
+        },
+        "name": {
+          "type": "string",
+          "description": "Name of the document."
+        },
+        "url": {
+          "type": "string",
+          "description": "URL of the stored document.",
+          "format": "uri"
+        },
+        "employeeId": {
+          "type": "string",
+          "description": "Reference to the Employee who uploaded the document. (Relationship: Employee 1:N Document)"
+        },
+        "uploadDate": {
+          "type": "string",
+          "description": "Date and time the document was uploaded.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "url",
+        "employeeId",
+        "uploadDate"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/employees/{employeeId}",
+        "definition": {
+          "entityName": "Employee",
+          "schema": {
+            "$ref": "#/backend/entities/Employee"
+          },
+          "description": "Stores employee profiles. Path-based ownership ensures only the employee (or admin) can access their own profile.",
+          "params": [
+            {
+              "name": "employeeId",
+              "description": "The unique identifier for the employee."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/employees/{employeeId}/payrolls/{payrollId}",
+        "definition": {
+          "entityName": "Payroll",
+          "schema": {
+            "$ref": "#/backend/entities/Payroll"
+          },
+          "description": "Stores payroll information for each employee. Path-based ownership ensures only the employee (or admin) can access their payroll data.",
+          "params": [
+            {
+              "name": "employeeId",
+              "description": "The unique identifier for the employee."
+            },
+            {
+              "name": "payrollId",
+              "description": "The unique identifier for the payroll record."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/employees/{employeeId}/documents/{documentId}",
+        "definition": {
+          "entityName": "Document",
+          "schema": {
+            "$ref": "#/backend/entities/Document"
+          },
+          "description": "Stores documents uploaded by each employee. Path-based ownership ensures only the employee (or admin) can access their uploaded documents.",
+          "params": [
+            {
+              "name": "employeeId",
+              "description": "The unique identifier for the employee."
+            },
+            {
+              "name": "documentId",
+              "description": "The unique identifier for the document."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/announcements/{announcementId}",
+        "definition": {
+          "entityName": "Announcement",
+          "schema": {
+            "$ref": "#/backend/entities/Announcement"
+          },
+          "description": "Stores company-wide announcements.  Includes denormalized 'authorId' field for authorization independence.",
+          "params": [
+            {
+              "name": "announcementId",
+              "description": "The unique identifier for the announcement."
+            }
+          ]
+        }
+      },
+      {
+        "path": "/departments/{departmentId}",
+        "definition": {
+          "entityName": "Department",
+          "schema": {
+            "$ref": "#/backend/entities/Department"
+          },
+          "description": "Stores department information.",
+          "params": [
+            {
+              "name": "departmentId",
+              "description": "The unique identifier for the department."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "The Firestore data structure is designed to support the AppIntel Hub application, prioritizing security, scalability, and maintainability. It leverages path-based ownership for private user data and a global collection for public announcements. This structure enforces authorization independence, crucial for robust security rules and atomic operations. Segregation of concerns is maintained by separating employee-specific data (payroll, documents) into user-owned subcollections. Announcement data is kept separate so that they are globally accesible. To achieve Authorization Independence, employeeId is added to each announcement document, to avoid calling get() method. The structure supports the required QAPs by using segregation and path-based ownership."
+  }
+}

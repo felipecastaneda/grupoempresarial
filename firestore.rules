@@ -1,0 +1,179 @@
+/**
+ * Core Philosophy:
+ * This ruleset enforces a strict user-ownership model for sensitive employee data,
+ * while allowing for public consumption of company-wide information. The primary goal
+ * is to ensure that employees can only access their own private information.
+ *
+ * Data Structure:
+ * Data is segregated into two main categories:
+ * 1. Private Employee Data: Nested under `/employees/{employeeId}`, this includes an
+ *    employee's profile, payroll records, and personal documents. Access to this entire
+ *    data tree is restricted to the authenticated user whose UID matches the `employeeId`.
+ * 2. Company-Wide Data: Stored in top-level collections like `/announcements` and
+ *    `/departments`, this data is intended for broader access.
+ *
+ * Key Security Decisions:
+ * - Strict Ownership: An employee can only read or write their own documents under
+ *   `/employees/{employeeId}`. There is no concept of cross-user access.
+ * - Privacy by Default: Listing all employees from the top-level `/employees`
+ *   collection is explicitly forbidden to protect user privacy.
+ * - Public Read, Owner Write: Announcements are publicly readable by anyone (including
+ *   unauthenticated users), but can only be created, updated, or deleted by their
+ *   original author.
+ * - Read-Only Company Data: The `/departments` collection is treated as read-only for
+ *   all clients. This is a secure default, assuming this data is managed by a
+ *   trusted backend process or admin SDK, not directly by end-users.
+ *
+ * Denormalization for Authorization:
+ * The `/announcements` collection uses a denormalized `authorId` field on each document.
+ * This allows security rules to verify authorship for write operations directly from the
+ * document itself, avoiding slow and costly `get()` calls to other collections and
+ * ensuring authorization logic is simple and performant.
+ *
+ * Structural Segregation:
+ * The separation of private data into user-specific subcollections (e.g., `/employees/{employeeId}/payrolls`)
+ * from public top-level collections (`/announcements`) is a deliberate design choice. It
+ * provides strong security boundaries and makes list queries safe and efficient.
+ */
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // --------------------------------------------------------------------
+    // Helper Functions
+    // --------------------------------------------------------------------
+
+    /**
+     * Returns true if the user is authenticated.
+     */
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    /**
+     * Returns true if the authenticated user's UID matches the provided userId.
+     * This is the cornerstone of the ownership model.
+     */
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    /**
+     * Returns true if a document already exists.
+     * Used to protect against updates or deletes of non-existent data.
+     */
+    function isExistingDocument() {
+      return resource != null;
+    }
+
+    /**
+     * A convenient combination of isOwner and isExistingDocument for update/delete.
+     */
+    function isExistingOwner(userId) {
+      return isOwner(userId) && isExistingDocument();
+    }
+
+    /**
+     * Validates that the owner field in an incoming document matches the
+     * currently authenticated user during a create operation.
+     */
+    function isCreatingWithOwner(ownerFieldKey) {
+      return isSignedIn() && request.resource.data[ownerFieldKey] == request.auth.uid;
+    }
+
+    /**
+     * Validates that the owner field on an existing document is immutable
+     * and matches the path parameter during an update.
+     */
+    function ownerFieldIsImmutable(ownerFieldKey, pathId) {
+       return request.resource.data[ownerFieldKey] == resource.data[ownerFieldKey] && request.resource.data[ownerFieldKey] == pathId;
+    }
+
+    // --------------------------------------------------------------------
+    // Collection Rules
+    // --------------------------------------------------------------------
+
+    /**
+     * @description Controls access to employee profiles. An employee can create, read,
+     *              update, and delete their own profile document.
+     * @path /employees/{employeeId}
+     * @allow (get) An authenticated user with UID 'user123' reading their own profile at `/employees/user123`.
+     * @deny (get) User 'user123' attempting to read another profile at `/employees/user456`.
+     * @deny (list) Any user attempting to list all documents in the `/employees` collection.
+     * @principle Restricts access to a user's own data tree and prevents enumeration of all users.
+     */
+    match /employees/{employeeId} {
+      allow get: if isOwner(employeeId);
+      allow list: if false; // CRITICAL: Prevents listing all employees.
+      allow create: if isOwner(employeeId) && request.resource.data.id == employeeId;
+      allow update: if isExistingOwner(employeeId) && request.resource.data.id == resource.data.id;
+      allow delete: if isExistingOwner(employeeId);
+
+      /**
+       * @description Controls access to an employee's private payroll records.
+       * @path /employees/{employeeId}/payrolls/{payrollId}
+       * @allow (list) User 'user123' listing their own payrolls at `/employees/user123/payrolls`.
+       * @allow (create) User 'user123' creating a new payroll record in their own subcollection.
+       * @deny (get) User 'user456' attempting to read a payroll record from `/employees/user123/payrolls/{payrollId}`.
+       * @principle Enforces path-based ownership for sensitive subcollections.
+       */
+      match /payrolls/{payrollId} {
+        allow get: if isOwner(employeeId);
+        allow list: if isOwner(employeeId);
+        allow create: if isOwner(employeeId) && request.resource.data.employeeId == employeeId;
+        allow update: if isExistingOwner(employeeId) && ownerFieldIsImmutable('employeeId', employeeId);
+        allow delete: if isExistingOwner(employeeId);
+      }
+
+      /**
+       * @description Controls access to an employee's private documents.
+       * @path /employees/{employeeId}/documents/{documentId}
+       * @allow (list) User 'user123' listing their own documents at `/employees/user123/documents`.
+       * @allow (create) User 'user123' creating a new document in their own subcollection.
+       * @deny (get) User 'user456' attempting to read a document from `/employees/user123/documents/{documentId}`.
+       * @principle Enforces path-based ownership for sensitive subcollections.
+       */
+      match /documents/{documentId} {
+        allow get: if isOwner(employeeId);
+        allow list: if isOwner(employeeId);
+        allow create: if isOwner(employeeId) && request.resource.data.employeeId == employeeId;
+        allow update: if isExistingOwner(employeeId) && ownerFieldIsImmutable('employeeId', employeeId);
+        allow delete: if isExistingOwner(employeeId);
+      }
+    }
+
+    /**
+     * @description Controls access to company-wide announcements. Anyone can read,
+     *              but only the original author can create, update, or delete.
+     * @path /announcements/{announcementId}
+     * @allow (get) Any user, including unauthenticated ones, reading an announcement.
+     * @allow (create) An authenticated user creating an announcement where `authorId` matches their own UID.
+     * @deny (update) An authenticated user trying to update an announcement written by someone else.
+     * @principle Implements public read access with strict document ownership for writes.
+     */
+    match /announcements/{announcementId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if isCreatingWithOwner('authorId');
+      allow update: if isExistingOwner(resource.data.authorId);
+      allow delete: if isExistingOwner(resource.data.authorId);
+    }
+
+    /**
+     * @description Controls access to company departments. This data is considered
+     *              publicly readable but not modifiable by clients.
+     * @path /departments/{departmentId}
+     * @allow (get) Any user, including unauthenticated ones, reading department information.
+     * @deny (create) Any client attempting to create a new department.
+     * @deny (update) Any client attempting to update an existing department.
+     * @principle Provides public read access while preventing client-side writes to core business data.
+     */
+    match /departments/{departmentId} {
+      allow get: if true;
+      allow list: if true;
+      allow create: if false;
+      allow update: if false;
+      allow delete: if false;
+    }
+  }
+}
