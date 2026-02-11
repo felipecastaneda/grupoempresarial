@@ -48,14 +48,14 @@ export function Logo({
             {showText && (
                 <text
                     x="50"
-                    y="90"
+                    y="100"
                     textAnchor="middle"
-                    fontSize="18"
+                    fontSize="24"
                     fill={primaryColor}
                     fontFamily="var(--font-headline), sans-serif"
-                    fontWeight="600"
+                    fontWeight="900"
                 >
-                    ai.ai
+                    <tspan>ai</tspan><tspan fill={accentColor}>.ai</tspan>
                 </text>
             )}
         </svg>
