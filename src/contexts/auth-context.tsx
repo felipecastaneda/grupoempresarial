@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { auth, user, isUserLoading } = useFirebase();
   const router = useRouter();
 
-  const login = async (email: string, pass: string) => {
+  const login = async (email: string, pass:string) => {
     await signInWithEmailAndPassword(auth, email, pass);
   };
   

@@ -43,12 +43,14 @@ const navItems = [
 
 function DashboardNav() {
   const pathname = usePathname();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
   const { state: sidebarState } = useSidebar();
 
-  const userEmail = useAuth().user?.email;
-  const employee = employees.find(e => e.email === userEmail);
+  const employee = employees.find(e => e.email === user?.email);
   const avatar = PlaceHolderImages.find(p => p.id === employee?.avatar);
+  
+  const displayName = employee?.name || user?.displayName || 'Employee';
+  const displayEmail = user?.email || '';
 
   return (
     <>
@@ -81,12 +83,12 @@ function DashboardNav() {
       <SidebarFooter className="border-t border-sidebar-border">
         <div className="flex items-center gap-2">
           <Avatar className="h-8 w-8">
-            {avatar && <AvatarImage src={avatar.imageUrl} alt={employee?.name} />}
-            <AvatarFallback>{employee?.name.charAt(0)}</AvatarFallback>
+            {avatar && <AvatarImage src={avatar.imageUrl} alt={displayName} />}
+            <AvatarFallback>{displayName?.charAt(0)}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col overflow-hidden group-data-[collapsible=icon]:hidden">
-            <span className="text-sm font-medium truncate">{employee?.name || 'Employee'}</span>
-            <span className="text-xs text-sidebar-foreground/70 truncate">{employee?.email || ''}</span>
+            <span className="text-sm font-medium truncate">{displayName}</span>
+            <span className="text-xs text-sidebar-foreground/70 truncate">{displayEmail}</span>
           </div>
         </div>
         <Button variant="ghost" size="icon" className="w-full justify-start h-10 group-data-[collapsible=icon]:w-10" onClick={logout} aria-label="Logout">
