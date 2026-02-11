@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
+import { Logo } from '@/components/Logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 export default function Home() {
@@ -29,12 +30,10 @@ export default function Home() {
           <div className="container mx-auto px-4 relative">
             <div className="max-w-3xl text-center mx-auto">
               <div className="flex flex-col items-center mb-8">
-                <Image
-                  src="https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.firebasestorage.app/o/app_images%2FAI_Logo.png?alt=media&token=72b91c98-2d00-40ad-95bf-a66c0bcc4415"
-                  alt="AppIntel Hub Logo"
-                  width={100}
-                  height={100}
+                <Logo
                   className="h-24 w-24"
+                  primaryColor="hsl(var(--primary-foreground))"
+                  accentColor="hsl(var(--accent))"
                 />
                 <p className="mt-2 text-lg font-semibold text-primary-foreground/90">ai.ai</p>
               </div>
