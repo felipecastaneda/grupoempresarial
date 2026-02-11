@@ -1,6 +1,11 @@
 import { cn } from "@/lib/utils";
 
-export function Logo({ className, ...props }: React.SVGProps<SVGSVGElement>) {
+export function Logo({
+  className,
+  primaryColor = "hsl(var(--primary))",
+  accentColor = "hsl(var(--accent))",
+  ...props
+}: React.SVGProps<SVGSVGElement> & { primaryColor?: string; accentColor?: string }) {
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -12,7 +17,7 @@ export function Logo({ className, ...props }: React.SVGProps<SVGSVGElement>) {
                 {/* A for Application */}
                 <path
                     d="M20 80 L50 20 L80 80"
-                    stroke="hsl(var(--primary))"
+                    stroke={primaryColor}
                     strokeWidth="12"
                     fill="none"
                     strokeLinecap="round"
@@ -23,18 +28,18 @@ export function Logo({ className, ...props }: React.SVGProps<SVGSVGElement>) {
                     y1="55"
                     x2="65"
                     y2="55"
-                    stroke="hsl(var(--primary))"
+                    stroke={primaryColor}
                     strokeWidth="12"
                     strokeLinecap="round"
                 />
                 {/* I for Intelligence, using the accent color */}
-                <circle cx="50" cy="55" r="6" fill="hsl(var(--accent))" />
+                <circle cx="50" cy="55" r="6" fill={accentColor} />
                 <line
                     x1="50"
                     y1="70"
                     x2="50"
                     y2="84"
-                    stroke="hsl(var(--accent))"
+                    stroke={accentColor}
                     strokeWidth="10"
                     strokeLinecap="round"
                 />

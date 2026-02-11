@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Logo } from '@/components/Logo';
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find(p => p.id === "hero");
@@ -28,6 +29,12 @@ export default function Home() {
           <div className="absolute inset-0 bg-primary/80" />
           <div className="container mx-auto px-4 relative">
             <div className="max-w-3xl text-center mx-auto">
+              <div className="flex justify-center mb-8">
+                <Logo
+                  className="h-24 w-24"
+                  primaryColor="hsl(var(--primary-foreground))"
+                />
+              </div>
               <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground font-headline">
                 Application Intelligence
               </h1>
