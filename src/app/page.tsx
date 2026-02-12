@@ -18,7 +18,7 @@ export default function Home() {
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
   const plugin = React.useRef(
-    Autoplay({ delay: 6000, stopOnInteraction: true, stopOnMouseEnter: true })
+    Autoplay({ delay: 6000, stopOnInteraction: false, stopOnMouseEnter: true })
   )
 
   React.useEffect(() => {
