@@ -2,7 +2,6 @@
 
 import React, { createContext, ReactNode } from 'react';
 import { User, signInWithEmailAndPassword, signOut } from 'firebase/auth';
-import { useRouter } from 'next/navigation';
 import { useFirebase } from '@/firebase/provider';
 
 interface AuthContextType {
@@ -16,15 +15,13 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const { auth, user, isUserLoading } = useFirebase();
-  const router = useRouter();
 
-  const login = async (email: string, pass:string) => {
+  const login = async (email: string, pass: string) => {
     await signInWithEmailAndPassword(auth, email, pass);
   };
   
   const logout = async () => {
     await signOut(auth);
-    router.push('/login');
   };
 
   return (
