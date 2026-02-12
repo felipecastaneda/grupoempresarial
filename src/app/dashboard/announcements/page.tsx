@@ -10,13 +10,13 @@ export default function AnnouncementsPage() {
       <p className="text-muted-foreground mb-6">
         Stay up-to-date with the latest news and announcements from across the company.
       </p>
-      <div className="space-y-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
         {announcements.map((announcement) => {
           const image = PlaceHolderImages.find(p => p.id === announcement.imageId);
           return (
             <Card key={announcement.id}>
               {image && (
-                <div className="relative h-64 w-full">
+                <div className="relative h-48 w-full">
                   <Image
                     src={image.imageUrl}
                     alt={announcement.title}
