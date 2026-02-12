@@ -18,7 +18,7 @@ export default function Home() {
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
   const plugin = React.useRef(
-    Autoplay({ delay: 6000, stopOnInteraction: true })
+    Autoplay({ delay: 6000, stopOnInteraction: true, stopOnMouseEnter: true })
   )
 
   React.useEffect(() => {
@@ -76,8 +76,6 @@ export default function Home() {
               setApi={setApi}
               plugins={[plugin.current]}
               className="w-full max-w-6xl mx-auto"
-              onMouseEnter={plugin.current.stop}
-              onMouseLeave={plugin.current.reset}
             >
               <CarouselContent>
                 <CarouselItem>
