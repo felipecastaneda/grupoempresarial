@@ -114,7 +114,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <header className="flex h-14 items-center gap-4 border-b bg-card px-4 lg:h-[60px] lg:px-6">
           <SidebarTrigger className="md:hidden" />
           <h1 className="text-lg font-semibold md:text-xl font-headline flex-1">
-            {navItems.find(item => item.href === usePathname())?.label || 'Dashboard'}
+            {navItems.find(item => item.href === pathname)?.label || 'Dashboard'}
           </h1>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
