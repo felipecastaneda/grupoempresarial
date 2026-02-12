@@ -2,6 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
 import {
   SidebarProvider,
@@ -53,12 +54,12 @@ function DashboardNav() {
   return (
     <>
       <SidebarHeader>
-        <div className="flex items-center gap-2">
+        <Link href="/" className="flex items-center gap-2">
           <Logo className="w-7 h-7 flex-shrink-0 text-primary" />
           <span className="font-semibold text-lg font-headline text-sidebar-foreground group-data-[collapsible=icon]:hidden">
             AppIntel Hub
           </span>
-        </div>
+        </Link>
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
