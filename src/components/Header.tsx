@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
 import { Logo } from "./Logo";
 import { useAuth } from "@/hooks/use-auth";
@@ -15,10 +16,11 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { employees } from "@/lib/data";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { Loader2, LogOut } from "lucide-react";
+import { Loader2, LogOut, LayoutDashboard } from "lucide-react";
 
 export function Header() {
   const { user, loading, logout } = useAuth();
+  const router = useRouter();
 
   const renderAuthSection = () => {
     if (loading) {
@@ -54,6 +56,10 @@ export function Header() {
             <p className="text-xs text-muted-foreground font-normal">{user.email}</p>
           </DropdownMenuLabel>
           <DropdownMenuSeparator />
+          <DropdownMenuItem onClick={() => router.push('/dashboard')}>
+            <LayoutDashboard className="mr-2 h-4 w-4" />
+            <span>My Portal</span>
+          </DropdownMenuItem>
           <DropdownMenuItem onClick={logout}>
             <LogOut className="mr-2 h-4 w-4" />
             <span>Logout</span>

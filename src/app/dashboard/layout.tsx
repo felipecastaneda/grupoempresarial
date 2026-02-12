@@ -135,6 +135,10 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 <p className="text-xs text-muted-foreground font-normal">{user.email}</p>
               </DropdownMenuLabel>
               <DropdownMenuSeparator />
+              <DropdownMenuItem onClick={() => router.push('/dashboard')}>
+                <LayoutDashboard className="mr-2 h-4 w-4" />
+                <span>My Portal</span>
+              </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
                 <span>Logout</span>
