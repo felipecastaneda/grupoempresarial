@@ -95,6 +95,24 @@
       "description": "Avatar for an employee",
       "imageUrl": "https://images.unsplash.com/photo-1544005313-94ddf0286df2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwZXJzb24lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NzA3MDUyNjF8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "person portrait"
+    },
+    {
+      "id": "announcement1",
+      "description": "A presenter on a stage at a town hall meeting",
+      "imageUrl": "https://images.unsplash.com/photo-1581930197572-16ad76d3d926?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx0b3duJTIwaGFsbHxlbnwwfHx8fDE3NzA3NTkyMTN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "town hall"
+    },
+    {
+      "id": "announcement2",
+      "description": "A person wearing a hard hat and safety vest",
+      "imageUrl": "https://images.unsplash.com/photo-1601058268499-e52658b8bb88?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx3b3JrcGxhY2UlMjBzYWZldHl8ZW58MHx8fHwxNzcwODYzMzY2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "workplace safety"
+    },
+    {
+      "id": "announcement3",
+      "description": "People having a picnic in a park",
+      "imageUrl": "https://images.unsplash.com/photo-1751452090675-2cce9ed3c33f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwcGljbmljfGVufDB8fHx8MTc3MDg2MzM2Nnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "company picnic"
     }
   ]
 }

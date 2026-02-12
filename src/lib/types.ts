@@ -12,6 +12,7 @@ export type Announcement = {
   title: string;
   content: string;
   date: string;
+  imageId: string;
 };
 
 export type Payroll = {

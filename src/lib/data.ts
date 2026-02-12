@@ -24,9 +24,9 @@ export const employees: Employee[] = [
 ];
 
 export const announcements: Announcement[] = [
-  { id: '1', title: 'Q3 Town Hall Meeting', content: 'Join us for the Q3 town hall this Friday at 3 PM in the main conference room. We will discuss our quarterly performance and future goals.', date: '2023-09-15' },
-  { id: '2', title: 'New Office Health & Safety Guidelines', content: 'Please review the updated health and safety guidelines available on the intranet. Your cooperation is essential to maintaining a safe workplace.', date: '2023-09-10' },
-  { id: '3', title: 'Annual Company Picnic', content: 'Get ready for some fun in the sun! The annual company picnic will be held on October 7th at Green Park. More details to follow.', date: '2023-09-05' },
+  { id: '1', title: 'Q3 Town Hall Meeting', content: 'Join us for the Q3 town hall this Friday at 3 PM in the main conference room. We will discuss our quarterly performance and future goals.', date: '2023-09-15', imageId: 'announcement1' },
+  { id: '2', title: 'New Office Health & Safety Guidelines', content: 'Please review the updated health and safety guidelines available on the intranet. Your cooperation is essential to maintaining a safe workplace.', date: '2023-09-10', imageId: 'announcement2' },
+  { id: '3', title: 'Annual Company Picnic', content: 'Get ready for some fun in the sun! The annual company picnic will be held on October 7th at Green Park. More details to follow.', date: '2023-09-05', imageId: 'announcement3' },
 ];
 
 export const payrolls: Payroll[] = [
