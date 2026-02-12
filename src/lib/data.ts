@@ -1,4 +1,4 @@
-import type { Employee, Announcement, Payroll } from './types';
+import type { Employee, Announcement, Payroll, PolicyDocument } from './types';
 
 export const employees: Employee[] = [
   // Management
@@ -40,3 +40,27 @@ export const performanceData = {
     "Development": "Metrics: 15 projects completed, 95% on-time delivery, 3 major features launched, team morale at 8/10. Challenges: Unexpected scope creep in Project Phoenix. Successes: Successful launch of the new mobile app, which received positive user feedback.",
     "Call Center": "Metrics: 92% customer satisfaction rate, average response time of 45 seconds, 5% decrease in call volume due to better documentation. Challenges: High volume of calls during the new feature launch. Successes: Implemented a new ticketing system that improved efficiency by 15%."
 }
+
+export const policies: PolicyDocument[] = [
+  {
+    id: '1',
+    title: 'Code of Conduct',
+    description: 'Our principles for ethical and professional behavior.',
+    imageId: 'policy-conduct',
+    pdfUrl: 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.appspot.com/o/policies%2Fcode_of_conduct.pdf?alt=media',
+  },
+  {
+    id: '2',
+    title: 'Remote Work Policy',
+    description: 'Guidelines and best practices for working from home.',
+    imageId: 'policy-remote',
+    pdfUrl: 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.appspot.com/o/policies%2Fremote_work_policy.pdf?alt=media',
+  },
+  {
+    id: '3',
+    title: 'Data Security Policy',
+    description: 'How we protect company and customer data.',
+    imageId: 'policy-security',
+    pdfUrl: 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.appspot.com/o/policies%2Fdata_security_policy.pdf?alt=media',
+  },
+];

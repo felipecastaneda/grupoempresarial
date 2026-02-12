@@ -34,6 +34,7 @@ import {
   LogOut,
   BrainCircuit,
   Loader2,
+  BookText,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { employees } from '@/lib/data';
@@ -46,6 +47,7 @@ const navItems = [
   { href: '/dashboard/directory', icon: Users, label: 'Directory' },
   { href: '/dashboard/documents', icon: Folder, label: 'Documents' },
   { href: '/dashboard/performance', icon: BrainCircuit, label: 'Performance' },
+  { href: '/dashboard/policies-and-procedures', icon: BookText, label: 'Policies & Procedures' },
 ];
 
 function DashboardNav() {

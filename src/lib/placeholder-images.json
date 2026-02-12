@@ -113,6 +113,24 @@
       "description": "People having a picnic in a park",
       "imageUrl": "https://images.unsplash.com/photo-1751452090675-2cce9ed3c33f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxjb21wYW55JTIwcGljbmljfGVufDB8fHx8MTc3MDg2MzM2Nnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "company picnic"
+    },
+    {
+      "id": "policy-conduct",
+      "description": "A document representing a code of conduct",
+      "imageUrl": "https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkb2N1bWVudCUyMHBvbGljeXxlbnwwfHx8fDE3NzA5MzM1MDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "document policy"
+    },
+    {
+      "id": "policy-remote",
+      "description": "A person working remotely in a comfortable setting",
+      "imageUrl": "https://images.unsplash.com/photo-1616531770192-6eaea74c2456?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyZW1vdGUlMjB3b3JrfGVufDB8fHx8MTc3MDkwMzk5OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "remote work"
+    },
+    {
+      "id": "policy-security",
+      "description": "A padlock symbolizing data security",
+      "imageUrl": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkYXRhJTIwc2VjdXJpdHl8ZW58MHx8fHwxNzcwODM3NDgzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "data security"
     }
   ]
 }

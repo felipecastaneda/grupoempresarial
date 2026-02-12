@@ -31,3 +31,11 @@ export type StoredFile = {
   size: number;
   uploadedAt: string;
 };
+
+export type PolicyDocument = {
+  id: string;
+  title: string;
+  description: string;
+  imageId: string; // Corresponds to ID in placeholder-images.json
+  pdfUrl: string; // URL to the PDF in Firebase Storage
+};
