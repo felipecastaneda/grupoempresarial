@@ -67,6 +67,7 @@ export default function PoliciesAndProceduresPage() {
         policyTitle: policy.title,
         userId: user.uid,
         userName: displayName,
+        userEmail: user.email,
         acknowledgedAt: new Date().toISOString(),
       };
 

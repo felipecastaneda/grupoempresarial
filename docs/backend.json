@@ -26,6 +26,10 @@
           "type": "string",
           "description": "Name of the user who acknowledged the policy."
         },
+        "userEmail": {
+          "type": "string",
+          "description": "Email of the user who acknowledged the policy."
+        },
         "acknowledgedAt": {
           "type": "string",
           "description": "Date and time the policy was acknowledged.",
@@ -38,6 +42,7 @@
         "policyTitle",
         "userId",
         "userName",
+        "userEmail",
         "acknowledgedAt"
       ]
     },

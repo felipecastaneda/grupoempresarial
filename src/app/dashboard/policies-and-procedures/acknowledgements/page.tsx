@@ -62,7 +62,7 @@ export default function AcknowledgementsPage() {
                                         <TableCell>{ack.userName}</TableCell>
                                         <TableCell>{format(new Date(ack.acknowledgedAt), "MMM dd, yyyy 'at' p")}</TableCell>
                                         <TableCell>
-                                            <Badge variant="secondary">{getDepartmentForUser(ack.userName)}</Badge>
+                                            <Badge variant="secondary">{getDepartmentForUser(ack.userEmail)}</Badge>
                                         </TableCell>
                                     </TableRow>
                                 )) : (

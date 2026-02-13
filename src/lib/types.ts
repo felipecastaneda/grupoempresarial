@@ -46,5 +46,6 @@ export type AcknowledgedPolicy = {
   policyTitle: string;
   userId: string;
   userName: string;
+  userEmail: string;
   acknowledgedAt: string;
 };
