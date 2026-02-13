@@ -28,8 +28,8 @@ import Image from "next/image";
 import { FileText, CheckCircle, ListChecks, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
-import { useFirebase, useMemoFirebase } from "@/firebase";
-import { collection, doc, setDoc, query, where, getDocs } from "firebase/firestore";
+import { useFirebase, useMemoFirebase, setDocumentNonBlocking } from "@/firebase";
+import { collection, doc, query, where, getDocs } from "firebase/firestore";
 
 export default function PoliciesAndProceduresPage() {
   const [selectedPolicy, setSelectedPolicy] = useState<PolicyDocument | null>(null);
@@ -74,7 +74,7 @@ export default function PoliciesAndProceduresPage() {
   }, [acknowledgementsQuery, toast]);
 
 
-  const handleAcknowledge = async (policy: PolicyDocument) => {
+  const handleAcknowledge = (policy: PolicyDocument) => {
     if (!user || !user.email) {
       toast({
         title: "Authentication Error",
@@ -99,7 +99,7 @@ export default function PoliciesAndProceduresPage() {
         acknowledgedAt: new Date().toISOString(),
       };
 
-      await setDoc(ackDocRef, newAcknowledgement, { merge: true });
+      setDocumentNonBlocking(ackDocRef, newAcknowledgement, { merge: true });
 
       setAcknowledgedPolicies(prev => new Set(prev).add(policy.id));
 
