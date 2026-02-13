@@ -1,5 +1,5 @@
 import { genkit } from 'genkit';
-import { googleAI, vertexAI } from '@genkit-ai/google-genai';
+import { googleAI } from '@genkit-ai/google-genai';
 import { CONST_GEMINI_API_KEY } from '@/lib/constants';
 
 let apiKey: string | undefined = process.env.GEMINI_API_KEY;
@@ -21,12 +21,10 @@ if (apiKey) {
 
 export const ai = genkit({
   plugins: [
-    process.env.NODE_ENV === 'production'
-      ? vertexAI({ location: 'us-central1' })      
-      : googleAI({ apiKey: apiKey }),
+    // Use Google AI with API Key for all environments (dev and prod)
+    googleAI({ apiKey: apiKey }),
   ],
   model:
-    process.env.NODE_ENV === 'production'
-      ? vertexAI.model('gemini-2.5-flash-image')
-      : googleAI.model('gemini-2.5-flash-lite'),
+    // Use a stable Google AI model for all environments
+    googleAI.model('gemini-1.5-flash-latest'),
 });
