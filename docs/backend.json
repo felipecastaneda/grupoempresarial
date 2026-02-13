@@ -1,5 +1,46 @@
 {
   "entities": {
+    "Acknowledgement": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Acknowledgement",
+      "type": "object",
+      "description": "Represents an employee's acknowledgement of a policy.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the acknowledgement record."
+        },
+        "policyId": {
+          "type": "string",
+          "description": "The ID of the policy document being acknowledged."
+        },
+        "policyTitle": {
+          "type": "string",
+          "description": "The title of the policy document being acknowledged."
+        },
+        "userId": {
+          "type": "string",
+          "description": "ID of the user who acknowledged the policy."
+        },
+        "userName": {
+          "type": "string",
+          "description": "Name of the user who acknowledged the policy."
+        },
+        "acknowledgedAt": {
+          "type": "string",
+          "description": "Date and time the policy was acknowledged.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "policyId",
+        "policyTitle",
+        "userId",
+        "userName",
+        "acknowledgedAt"
+      ]
+    },
     "Announcement": {
       "$schema": "http://json-schema.org/draft-07/schema#",
       "title": "Announcement",
@@ -286,8 +327,24 @@
             }
           ]
         }
+      },
+      {
+        "path": "/acknowledgements/{acknowledgementId}",
+        "definition": {
+          "entityName": "Acknowledgement",
+          "schema": {
+            "$ref": "#/backend/entities/Acknowledgement"
+          },
+          "description": "Stores all policy acknowledgements from all employees. The document ID should be a composite of userId and policyId to prevent duplicates.",
+          "params": [
+            {
+              "name": "acknowledgementId",
+              "description": "The unique identifier for the acknowledgement record."
+            }
+          ]
+        }
       }
     ],
-    "reasoning": "The Firestore data structure is designed to support the AppIntel Hub application, prioritizing security, scalability, and maintainability. It leverages path-based ownership for private user data and a global collection for public announcements. This structure enforces authorization independence, crucial for robust security rules and atomic operations. Segregation of concerns is maintained by separating employee-specific data (payroll, documents) into user-owned subcollections. Announcement data is kept separate so that they are globally accesible. To achieve Authorization Independence, employeeId is added to each announcement document, to avoid calling get() method. The structure supports the required QAPs by using segregation and path-based ownership."
+    "reasoning": "The Firestore data structure is designed to support the AppIntel Hub application, prioritizing security, scalability, and maintainability. It leverages path-based ownership for private user data and a global collection for public announcements. This structure enforces authorization independence, crucial for robust security rules and atomic operations. Segregation of concerns is maintained by separating employee-specific data (payroll, documents) into user-owned subcollections. Announcement data is kept separate so that they are globally accesible. To achieve Authorization Independence, employeeId is added to each announcement document, to avoid calling get() method. The structure supports the required QAPs by using segregation and path-based ownership. A top-level 'acknowledgements' collection is used to store policy acknowledgements, which allows for easy querying of all acknowledgements while still allowing for user-specific queries via 'where' clauses on the 'userId' field."
   }
 }

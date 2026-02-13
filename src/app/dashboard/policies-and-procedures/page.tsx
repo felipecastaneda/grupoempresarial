@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,34 +21,71 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { policies } from "@/lib/data";
+import { policies, employees } from "@/lib/data";
 import type { PolicyDocument, AcknowledgedPolicy } from "@/lib/types";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Image from "next/image";
-import { FileText, CheckCircle, ListChecks } from "lucide-react";
+import { FileText, CheckCircle, ListChecks, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useAuth } from "@/hooks/use-auth";
+import { useFirebase, useCollection, useMemoFirebase } from "@/firebase";
+import { collection, doc, setDoc, query, where } from "firebase/firestore";
 
 export default function PoliciesAndProceduresPage() {
   const [selectedPolicy, setSelectedPolicy] = useState<PolicyDocument | null>(null);
-  const [policyToAcknowledge, setPolicyToAcknowledge] = useState<PolicyDocument | null>(null);
-  const [acknowledgements, setAcknowledgements] = useState<AcknowledgedPolicy[]>([]);
   const { toast } = useToast();
+  const { user } = useAuth();
+  const { firestore } = useFirebase();
+  const [isSubmitting, setIsSubmitting] = useState<string | null>(null);
 
-  const handleAcknowledge = (policy: PolicyDocument) => {
-    const newAcknowledgement: AcknowledgedPolicy = {
-      id: `${policy.id}-${Date.now()}`,
-      policyId: policy.id,
-      policyTitle: policy.title,
-      userId: "current-user-id", // Replace with actual user ID from auth
-      userName: "Current User", // Replace with actual user name
-      acknowledgedAt: new Date().toISOString(),
-    };
-    setAcknowledgements(prev => [...prev, newAcknowledgement]);
-    toast({
-      title: "Policy Acknowledged",
-      description: `You have successfully acknowledged the "${policy.title}".`,
-    });
-    setPolicyToAcknowledge(null);
+  const acknowledgementsQuery = useMemoFirebase(() => {
+    if (!user) return null;
+    return query(collection(firestore, 'acknowledgements'), where('userId', '==', user.uid));
+  }, [firestore, user]);
+
+  const { data: acknowledgements, isLoading: isLoadingAcknowledgements } = useCollection<AcknowledgedPolicy>(acknowledgementsQuery);
+
+
+  const handleAcknowledge = async (policy: PolicyDocument) => {
+    if (!user || !user.email) {
+      toast({
+        title: "Authentication Error",
+        description: "You must be logged in to acknowledge a policy.",
+        variant: "destructive",
+      });
+      return;
+    }
+    setIsSubmitting(policy.id);
+    try {
+      const ackDocRef = doc(firestore, 'acknowledgements', `${user.uid}_${policy.id}`);
+      
+      const employee = employees.find(e => e.email === user.email);
+      const displayName = employee?.name || user.displayName || user.email;
+
+      const newAcknowledgement = {
+        policyId: policy.id,
+        policyTitle: policy.title,
+        userId: user.uid,
+        userName: displayName,
+        acknowledgedAt: new Date().toISOString(),
+      };
+
+      await setDoc(ackDocRef, newAcknowledgement, { merge: true });
+
+      toast({
+        title: "Policy Acknowledged",
+        description: `You have successfully acknowledged the "${policy.title}".`,
+      });
+    } catch (error) {
+        console.error("Error acknowledging policy:", error);
+        toast({
+            title: "Error",
+            description: "Could not acknowledge the policy. Please try again.",
+            variant: "destructive",
+        });
+    } finally {
+        setIsSubmitting(null);
+    }
   };
 
   return (
@@ -68,7 +105,9 @@ export default function PoliciesAndProceduresPage() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {policies.map((policy) => {
             const image = PlaceHolderImages.find((p) => p.id === policy.imageId);
-            const isAcknowledged = acknowledgements.some(a => a.policyId === policy.id);
+            const isAcknowledged = acknowledgements?.some(a => a.policyId === policy.id);
+            const isAcknowledging = isSubmitting === policy.id;
+            
             return (
               <Card key={policy.id} className="flex flex-col">
                 {image && (
@@ -94,9 +133,10 @@ export default function PoliciesAndProceduresPage() {
                   </Button>
                   <AlertDialog>
                     <AlertDialogTrigger asChild>
-                      <Button className="w-full" variant="outline" disabled={isAcknowledged}>
-                        {isAcknowledged ? <CheckCircle className="mr-2 h-4 w-4" /> : null}
-                        {isAcknowledged ? 'Acknowledged' : 'Acknowledge'}
+                      <Button className="w-full" variant="outline" disabled={isAcknowledged || isLoadingAcknowledgements || isAcknowledging}>
+                        {isAcknowledging ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> :
+                         isAcknowledged ? <CheckCircle className="mr-2 h-4 w-4" /> : null}
+                        {isAcknowledging ? 'Submitting...' : isAcknowledged ? 'Acknowledged' : 'Acknowledge'}
                       </Button>
                     </AlertDialogTrigger>
                     <AlertDialogContent>
