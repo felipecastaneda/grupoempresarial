@@ -87,7 +87,7 @@ export default function PoliciesAndProceduresPage() {
                   <CardDescription>{policy.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow" />
-                <CardFooter className="flex flex-col sm:flex-row gap-2">
+                <CardFooter className="flex flex-col gap-2">
                   <Button className="w-full" onClick={() => setSelectedPolicy(policy)}>
                     <FileText className="mr-2 h-4 w-4" />
                     View Document
