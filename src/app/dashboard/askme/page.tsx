@@ -40,8 +40,7 @@ export default function AskMePage() {
     if (!input.trim() || isLoading) return;
 
     const userMessage: Message = { role: 'user', content: input.trim() };
-    const newMessages = [...messages, userMessage];
-    setMessages(newMessages);
+    setMessages(prev => [...prev, userMessage]);
     setInput("");
     setIsLoading(true);
 
@@ -51,7 +50,7 @@ export default function AskMePage() {
       };
       const result = await askMe(askMeInput);
       const assistantMessage: Message = { role: 'model', content: result.answer };
-      setMessages([...newMessages, assistantMessage]);
+      setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
       console.error("Error calling askMe flow:", error);
       toast({
@@ -60,7 +59,7 @@ export default function AskMePage() {
         variant: "destructive",
       });
       // Rollback the optimistic message update on error
-      setMessages(messages);
+      setMessages(prev => prev.slice(0, -1));
     } finally {
       setIsLoading(false);
     }
