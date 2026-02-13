@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,14 +22,14 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { policies, employees } from "@/lib/data";
-import type { PolicyDocument, AcknowledgedPolicy } from "@/lib/types";
+import type { PolicyDocument } from "@/lib/types";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Image from "next/image";
 import { FileText, CheckCircle, ListChecks, Loader2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
-import { useFirebase, useCollection, useMemoFirebase } from "@/firebase";
-import { collection, doc, setDoc, query, where } from "firebase/firestore";
+import { useFirebase, useMemoFirebase } from "@/firebase";
+import { collection, doc, setDoc, query, where, getDocs } from "firebase/firestore";
 
 export default function PoliciesAndProceduresPage() {
   const [selectedPolicy, setSelectedPolicy] = useState<PolicyDocument | null>(null);
@@ -37,13 +37,41 @@ export default function PoliciesAndProceduresPage() {
   const { user } = useAuth();
   const { firestore } = useFirebase();
   const [isSubmitting, setIsSubmitting] = useState<string | null>(null);
+  
+  const [acknowledgedPolicies, setAcknowledgedPolicies] = useState<Set<string>>(new Set());
+  const [isLoadingAcknowledgements, setIsLoadingAcknowledgements] = useState(true);
 
   const acknowledgementsQuery = useMemoFirebase(() => {
     if (!user) return null;
     return query(collection(firestore, 'acknowledgements'), where('userId', '==', user.uid));
   }, [firestore, user]);
 
-  const { data: acknowledgements, isLoading: isLoadingAcknowledgements } = useCollection<AcknowledgedPolicy>(acknowledgementsQuery);
+  useEffect(() => {
+    if (!acknowledgementsQuery) {
+        setIsLoadingAcknowledgements(false);
+        return;
+    }
+    setIsLoadingAcknowledgements(true);
+    getDocs(acknowledgementsQuery)
+        .then((snapshot) => {
+            const acknowledgedIds = new Set<string>();
+            snapshot.forEach(doc => {
+                acknowledgedIds.add(doc.data().policyId);
+            });
+            setAcknowledgedPolicies(acknowledgedIds);
+        })
+        .catch(error => {
+            console.error("Error fetching acknowledgements:", error);
+            toast({
+                title: "Error fetching data",
+                description: "Could not retrieve your acknowledgement status. Please refresh the page.",
+                variant: "destructive",
+            });
+        })
+        .finally(() => {
+            setIsLoadingAcknowledgements(false);
+        });
+  }, [acknowledgementsQuery, toast]);
 
 
   const handleAcknowledge = async (policy: PolicyDocument) => {
@@ -72,6 +100,8 @@ export default function PoliciesAndProceduresPage() {
       };
 
       await setDoc(ackDocRef, newAcknowledgement, { merge: true });
+
+      setAcknowledgedPolicies(prev => new Set(prev).add(policy.id));
 
       toast({
         title: "Policy Acknowledged",
@@ -106,7 +136,7 @@ export default function PoliciesAndProceduresPage() {
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {policies.map((policy) => {
             const image = PlaceHolderImages.find((p) => p.id === policy.imageId);
-            const isAcknowledged = acknowledgements?.some(a => a.policyId === policy.id);
+            const isAcknowledged = acknowledgedPolicies.has(policy.id);
             const isAcknowledging = isSubmitting === policy.id;
             
             return (
