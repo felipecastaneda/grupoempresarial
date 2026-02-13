@@ -36,6 +36,7 @@ import {
   Loader2,
   BookText,
   Bot,
+  Briefcase,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { employees } from '@/lib/data';
@@ -47,6 +48,7 @@ const navItems = [
   { href: '/dashboard/payroll', icon: CircleDollarSign, label: 'Payroll' },
   { href: '/dashboard/directory', icon: Users, label: 'Directory' },
   { href: '/dashboard/documents', icon: Folder, label: 'Documents' },
+  { href: '/dashboard/current-projects', icon: Briefcase, label: 'Current Projects' },
   { href: '/dashboard/performance', icon: BrainCircuit, label: 'Performance' },
   { href: '/dashboard/policies-and-procedures', icon: BookText, label: 'Policies & Procedures' },
   { href: '/dashboard/askme', icon: Bot, label: 'Ask Me' },

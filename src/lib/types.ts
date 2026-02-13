@@ -49,3 +49,11 @@ export type AcknowledgedPolicy = {
   userEmail: string;
   acknowledgedAt: string;
 };
+
+export type Project = {
+  id: string;
+  title: string;
+  description: string;
+  imageUrlId: string;
+  projectUrl: string;
+};

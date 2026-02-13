@@ -1,4 +1,4 @@
-import type { Employee, Announcement, Payroll, PolicyDocument } from './types';
+import type { Employee, Announcement, Payroll, PolicyDocument, Project } from './types';
 
 export const employees: Employee[] = [
   // Management
@@ -62,5 +62,22 @@ export const policies: PolicyDocument[] = [
     description: 'How we protect company and customer data.',
     imageId: 'policy-security',
     pdfUrl: 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.firebasestorage.app/o/policies_procedures%2FData%20Security%20Policy.pdf?alt=media&token=77a13b9f-03dd-426c-b0af-0bc84a4fc5e1',
+  },
+];
+
+export const projects: Project[] = [
+  {
+    id: '1',
+    title: 'Travelogis',
+    description: 'A multi-faceted web application that combines two distinct business verticals under one platform: a Travel Agency and a Cargo Logistics service. It is designed with a sophisticated role-based access system, providing tailored experiences for Customers, Agents, Supervisors, and Administrators. The application leverages a modern tech stack, including Next.js and React, and heavily integrates Generative AI (via Genkit) to power many of its unique features. It is also fully internationalized, supporting both English and Spanish.',
+    imageUrlId: 'project-travelogis',
+    projectUrl: 'http://travelogis.com',
+  },
+  {
+    id: '2',
+    title: 'EstimateMyJunk',
+    description: 'EstimateMyJunk (also referred to as JunkSnap Estimator) is a sophisticated, full-stack junk removal platform designed to automate the process of providing service estimates using artificial intelligence. The app streamlines the interaction between people who have junk to remove and the service providers who pick it up. It removes the friction of "calling for a quote" by allowing users to get an instant, AI-driven price estimate just by taking a photo of their trash.',
+    imageUrlId: 'project-estimatemyjunk',
+    projectUrl: 'http://estimatemyjunk.ai',
   },
 ];

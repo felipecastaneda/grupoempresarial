@@ -131,6 +131,18 @@
       "description": "A padlock symbolizing data security",
       "imageUrl": "https://images.unsplash.com/photo-1614064641938-3bbee52942c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxkYXRhJTIwc2VjdXJpdHl8ZW58MHx8fHwxNzcwODM3NDgzfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "data security"
+    },
+    {
+      "id": "project-travelogis",
+      "description": "A world map with travel and logistics icons",
+      "imageUrl": "https://images.unsplash.com/photo-1770231796759-a7611381209a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx0cmF2ZWwlMjBsb2dpc3RpY3N8ZW58MHx8fHwxNzcwOTYyMTg2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "travel logistics"
+    },
+    {
+      "id": "project-estimatemyjunk",
+      "description": "A pile of junk with a price tag on it",
+      "imageUrl": "https://images.unsplash.com/photo-1676044984934-da3a5122685b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8anVuayUyMHJlbW92YWx8ZW58MHx8fHwxNzcwOTYyMTg2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "junk removal"
     }
   ]
 }

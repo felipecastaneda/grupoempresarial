@@ -186,7 +186,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    Our team of 5 expert developers crafts robust, scalable, and innovative software solutions. From backend architecture to frontend design, we build the tools that power your business.
+                    Our team expert developers crafts robust, scalable, and innovative software solutions. From backend architecture to frontend design, we build the tools that power your business.
                   </p>
                 </CardContent>
               </Card>
@@ -199,7 +199,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-muted-foreground">
-                    With 8 dedicated support specialists, our call center provides exceptional customer service and technical support, ensuring a seamless experience for all our clients and their users.
+                    With dedicated support specialists, our call center provides exceptional customer service and technical support, ensuring a seamless experience for all our clients and their users.
                   </p>
                 </CardContent>
               </Card>
