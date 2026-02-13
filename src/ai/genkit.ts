@@ -1,9 +1,9 @@
-'use server';
-
 import {genkit} from 'genkit';
-import {googleAI} from '@genkit-ai/google-genai';
+import {vertexAI} from "@genkit-ai/google-genai";
 
 export const ai = genkit({
-  plugins: [googleAI()],
-  model: 'gemini-1.0-pro',
+  plugins: [
+    vertexAI({location: "global"})
+  ],
+  model: vertexAI.model("gemini-1.0-pro"),
 });
