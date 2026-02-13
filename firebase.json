@@ -8,7 +8,7 @@
     "source": "dataconnect"
   },
   "firestore": {
-    "database": "(default)",
+    "database": "prod",
     "location": "nam5",
     "rules": "firestore.rules",
     "indexes": "firestore.indexes.json"
