@@ -39,3 +39,12 @@ export type PolicyDocument = {
   imageId: string; // Corresponds to ID in placeholder-images.json
   pdfUrl: string; // URL to the PDF in Firebase Storage
 };
+
+export type AcknowledgedPolicy = {
+  id: string;
+  policyId: string;
+  policyTitle: string;
+  userId: string;
+  userName: string;
+  acknowledgedAt: string;
+};

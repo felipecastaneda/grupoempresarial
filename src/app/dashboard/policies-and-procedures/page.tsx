@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -9,24 +10,65 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
 import { policies } from "@/lib/data";
-import type { PolicyDocument } from "@/lib/types";
+import type { PolicyDocument, AcknowledgedPolicy } from "@/lib/types";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Image from "next/image";
-import { FileText } from "lucide-react";
+import { FileText, CheckCircle, ListChecks } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function PoliciesAndProceduresPage() {
   const [selectedPolicy, setSelectedPolicy] = useState<PolicyDocument | null>(null);
+  const [policyToAcknowledge, setPolicyToAcknowledge] = useState<PolicyDocument | null>(null);
+  const [acknowledgements, setAcknowledgements] = useState<AcknowledgedPolicy[]>([]);
+  const { toast } = useToast();
+
+  const handleAcknowledge = (policy: PolicyDocument) => {
+    const newAcknowledgement: AcknowledgedPolicy = {
+      id: `${policy.id}-${Date.now()}`,
+      policyId: policy.id,
+      policyTitle: policy.title,
+      userId: "current-user-id", // Replace with actual user ID from auth
+      userName: "Current User", // Replace with actual user name
+      acknowledgedAt: new Date().toISOString(),
+    };
+    setAcknowledgements(prev => [...prev, newAcknowledgement]);
+    toast({
+      title: "Policy Acknowledged",
+      description: `You have successfully acknowledged the "${policy.title}".`,
+    });
+    setPolicyToAcknowledge(null);
+  };
 
   return (
     <>
       <div className="space-y-6">
-        <p className="text-muted-foreground">
-          Access important company policies and procedure documents. Please review them regularly.
-        </p>
+        <div className="flex justify-between items-center">
+            <p className="text-muted-foreground">
+            Access important company policies and procedure documents. Please review them regularly.
+            </p>
+            <Button asChild>
+                <Link href="/dashboard/policies-and-procedures/acknowledgements">
+                    <ListChecks className="mr-2 h-4 w-4" />
+                    View Acknowledgements
+                </Link>
+            </Button>
+        </div>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {policies.map((policy) => {
             const image = PlaceHolderImages.find((p) => p.id === policy.imageId);
+            const isAcknowledged = acknowledgements.some(a => a.policyId === policy.id);
             return (
               <Card key={policy.id} className="flex flex-col">
                 {image && (
@@ -45,11 +87,31 @@ export default function PoliciesAndProceduresPage() {
                   <CardDescription>{policy.description}</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow" />
-                <CardFooter>
+                <CardFooter className="flex flex-col sm:flex-row gap-2">
                   <Button className="w-full" onClick={() => setSelectedPolicy(policy)}>
                     <FileText className="mr-2 h-4 w-4" />
                     View Document
                   </Button>
+                  <AlertDialog>
+                    <AlertDialogTrigger asChild>
+                      <Button className="w-full" variant="outline" disabled={isAcknowledged}>
+                        {isAcknowledged ? <CheckCircle className="mr-2 h-4 w-4" /> : null}
+                        {isAcknowledged ? 'Acknowledged' : 'Acknowledge'}
+                      </Button>
+                    </AlertDialogTrigger>
+                    <AlertDialogContent>
+                      <AlertDialogHeader>
+                        <AlertDialogTitle>Confirm Acknowledgement</AlertDialogTitle>
+                        <AlertDialogDescription>
+                          I acknowledge that I have read, understood, and agree to comply with the "{policy.title}".
+                        </AlertDialogDescription>
+                      </AlertDialogHeader>
+                      <AlertDialogFooter>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogAction onClick={() => handleAcknowledge(policy)}>Confirm</AlertDialogAction>
+                      </AlertDialogFooter>
+                    </AlertDialogContent>
+                  </AlertDialog>
                 </CardFooter>
               </Card>
             );
