@@ -38,10 +38,6 @@ Data is classified into three levels: Public, Internal, and Confidential.
 
 const AskMeInputSchema = z.object({
   question: z.string().describe("The user's question."),
-  history: z.array(z.object({
-    role: z.enum(['user', 'model']),
-    content: z.string()
-  })).optional().describe('The conversation history.')
 });
 export type AskMeInput = z.infer<typeof AskMeInputSchema>;
 
@@ -67,16 +63,9 @@ Here is the Data Security Policy:
 ${DATA_SECURITY_POLICY}
 ---
 
-Conversation History:
-{{#if history}}
-  {{#each history}}
-    {{role}}: {{{content}}}
-  {{/each}}
-{{/if}}
-
 New question from user: "{{question}}"
 
-Based on the policy and conversation history, provide an answer to the user's new question.`,
+Based on the policy, provide an answer to the user's new question.`,
 });
 
 const askMeFlow = ai.defineFlow(
@@ -87,9 +76,6 @@ const askMeFlow = ai.defineFlow(
   },
   async (input) => {
     const { output } = await prompt(input);
-    if (!output) {
-        throw new Error('Failed to get a response from the AI model.');
-    }
-    return output;
+    return output!;
   }
 );

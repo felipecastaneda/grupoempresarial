@@ -48,7 +48,6 @@ export default function AskMePage() {
     try {
       const askMeInput: AskMeInput = {
         question: userMessage.content,
-        history: messages, // pass previous messages as history
       };
       const result = await askMe(askMeInput);
       const assistantMessage: Message = { role: 'model', content: result.answer };
