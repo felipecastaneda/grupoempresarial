@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, 'use a';
 import { useRouter, usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { useAuth } from '@/hooks/use-auth';
@@ -35,6 +35,7 @@ import {
   BrainCircuit,
   Loader2,
   BookText,
+  Bot,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { employees } from '@/lib/data';
@@ -48,6 +49,7 @@ const navItems = [
   { href: '/dashboard/documents', icon: Folder, label: 'Documents' },
   { href: '/dashboard/performance', icon: BrainCircuit, label: 'Performance' },
   { href: '/dashboard/policies-and-procedures', icon: BookText, label: 'Policies & Procedures' },
+  { href: '/dashboard/askme', icon: Bot, label: 'Ask Me' },
 ];
 
 function DashboardNav() {
@@ -107,6 +109,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const employee = employees.find(e => e.email === user?.email);
   const avatar = PlaceHolderImages.find(p => p.id === employee?.avatar);
   const displayName = employee?.name || user?.displayName || user.email || 'Employee';
+  const pageTitle = navItems.find(item => item.href === pathname)?.label || 'Dashboard';
 
   return (
     <SidebarProvider>
@@ -117,7 +120,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <header className="flex h-14 items-center gap-4 border-b bg-card px-4 lg:h-[60px] lg:px-6">
           <SidebarTrigger className="md:hidden" />
           <h1 className="text-lg font-semibold md:text-xl font-headline flex-1">
-            {navItems.find(item => item.href === pathname)?.label || 'Dashboard'}
+            {pageTitle}
           </h1>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
