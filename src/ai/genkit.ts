@@ -26,5 +26,5 @@ export const ai = genkit({
   ],
   model:
     // Use a stable Google AI model for all environments
-    googleAI.model('gemini-1.5-flash-latest'),
+    googleAI.model('gemini-2.5-flash-lite'),
 });
