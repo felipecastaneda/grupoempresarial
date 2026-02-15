@@ -5,7 +5,7 @@ import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Calendar } from "@/components/ui/calendar";
 import { Badge } from "@/components/ui/badge";
-import { format } from "date-fns";
+import { format, isSameDay } from "date-fns";
 
 const events = [
   { date: new Date(2023, 8, 15), title: "Q3 Town Hall Meeting", type: "corporate" },
@@ -15,11 +15,13 @@ const events = [
   { date: new Date(2023, 11, 15), title: "End of Year Party", type: "social" },
 ];
 
+const eventDays = events.map(event => event.date);
+
 export default function ActivitiesCalendarPage() {
   const [date, setDate] = useState<Date | undefined>(new Date());
 
   const selectedDayEvents = date
-    ? events.filter(event => format(event.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd"))
+    ? events.filter(event => isSameDay(event.date, date))
     : [];
 
   return (
@@ -39,24 +41,8 @@ export default function ActivitiesCalendarPage() {
               selected={date}
               onSelect={setDate}
               className="p-4"
-              components={{
-                Day: ({ date, ...props }) => {
-                  const dayEvents = events.filter(
-                    event => format(event.date, "yyyy-MM-dd") === format(date, "yyyy-MM-dd")
-                  );
-                  return (
-                    // The 'relative' class is needed to position the dot
-                    <div className="relative">
-                      {/* We need to render the default Day component from react-day-picker */}
-                      {/* @ts-ignore */}
-                      <props.children {...props.children.props} />
-                      {dayEvents.length > 0 && (
-                        <span className="absolute bottom-1 left-1/2 -translate-x-1/2 h-1.5 w-1.5 rounded-full bg-primary" />
-                      )}
-                    </div>
-                  );
-                },
-              }}
+              modifiers={{ hasEvent: eventDays }}
+              modifiersClassNames={{ hasEvent: "has-event" }}
             />
           </CardContent>
         </Card>

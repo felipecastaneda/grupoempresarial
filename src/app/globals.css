@@ -89,4 +89,18 @@ h1, h2, h3, h4, h5, h6 {
   body {
     @apply bg-background text-foreground;
   }
+  .has-event {
+    @apply relative;
+  }
+  .has-event::after {
+    content: '';
+    position: absolute;
+    bottom: 4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: hsl(var(--primary));
+  }
 }
