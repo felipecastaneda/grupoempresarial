@@ -50,18 +50,18 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const navItems = [
   { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
+  { href: '/dashboard/activities-calendar', icon: CalendarDays, label: 'Activities Calendar' },
   { href: '/dashboard/announcements', icon: Megaphone, label: 'Announcements' },
-  { href: '/dashboard/payroll', icon: CircleDollarSign, label: 'Payroll' },
+  { href: '/dashboard/askme', icon: Bot, label: 'Ask Me' },
+  { href: '/dashboard/current-projects', icon: Briefcase, label: 'Current Projects' },
   { href: '/dashboard/directory', icon: Users, label: 'Directory' },
   { href: '/dashboard/documents', icon: Folder, label: 'Documents' },
-  { href: '/dashboard/current-projects', icon: Briefcase, label: 'Current Projects' },
+  { href: '/dashboard/health-and-safety', icon: HeartPulse, label: 'Health and Safety' },
+  { href: '/dashboard/legal', icon: Scale, label: 'Legal' },
+  { href: '/dashboard/office-of-the-ceo', icon: Landmark, label: 'Office of the CEO' },
+  { href: '/dashboard/payroll', icon: CircleDollarSign, label: 'Payroll' },
   { href: '/dashboard/performance', icon: BrainCircuit, label: 'Performance' },
   { href: '/dashboard/policies-and-procedures', icon: BookText, label: 'Policies & Procedures' },
-  { href: '/dashboard/askme', icon: Bot, label: 'Ask Me' },
-  { href: '/dashboard/health-and-safety', icon: HeartPulse, label: 'Health and Safety' },
-  { href: '/dashboard/office-of-the-ceo', icon: Landmark, label: 'Office of the CEO' },
-  { href: '/dashboard/legal', icon: Scale, label: 'Legal' },
-  { href: '/dashboard/activities-calendar', icon: CalendarDays, label: 'Activities Calendar' },
 ];
 
 const privilegedNavItems = [
