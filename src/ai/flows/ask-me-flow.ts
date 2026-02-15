@@ -11,7 +11,7 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import pdf from 'pdf-parse';
-import { policies } from '@/lib/data';
+import { policies, projects } from '@/lib/data';
 
 // Input from the client is just the question.
 const ClientInputSchema = z.object({
@@ -23,6 +23,7 @@ export type AskMeInput = z.infer<typeof ClientInputSchema>;
 const PromptInputSchema = z.object({
   question: z.string().describe("The user's question."),
   policiesText: z.string().describe("The text content of all policy documents combined."),
+  projectsText: z.string().describe("A summary of all current company projects."),
 });
 
 const AskMeOutputSchema = z.object({
@@ -73,20 +74,27 @@ const prompt = ai.definePrompt({
   input: {schema: PromptInputSchema},
   output: {schema: AskMeOutputSchema},
   tools: [getInternalLink],
-  prompt: `You are an AI assistant for AppIntel Hub. Your role is to answer questions based *only* on the information provided in the company policy documents and the available tools.
+  prompt: `You are an AI assistant for AppIntel Hub. Your role is to answer questions based *only* on the information provided in the company policy documents, the current project list, and the available tools.
 
 If a user asks where to find a page or for a link to a section of the website (like "payroll" or "directory"), you MUST use the 'getInternalLink' tool to provide the correct URL. When you use the tool, format your answer like this: "You can find that information on the [Page Name] page, or by visiting [URL]."
 
-If a question is about policies, use the documents provided. If a question is outside the scope of the provided policies or tools, you must state that you do not have information on that topic. Do not make up answers.
+If a user asks about current projects, use the provided project list to summarize them.
+
+If a question is about policies, use the documents provided. If a question is outside the scope of the provided policies, projects, or tools, you must state that you do not have information on that topic. Do not make up answers.
 
 Here are the policy documents:
 ---
 {{policiesText}}
 ---
 
+Here is the list of current projects:
+---
+{{projectsText}}
+---
+
 New question from user: "{{question}}"
 
-Based on the policies and available tools, provide an answer to the user's new question.`,
+Based on the policies, projects, and available tools, provide an answer to the user's new question.`,
 });
 
 const askMeFlow = ai.defineFlow(
@@ -125,11 +133,17 @@ const askMeFlow = ai.defineFlow(
         return { answer: "I'm sorry, I couldn't load the policy documents. Please try again later." };
     }
 
-    // 3. Call the prompt with the question and the combined text.
+    // 3. Combine project data
+    const projectsText = projects
+        .map(p => `Project: ${p.title}\nDescription: ${p.description}`)
+        .join('\n\n');
+
+    // 4. Call the prompt with the question and the combined text.
     // The prompt will automatically use the tool if needed.
     const { output } = await prompt({
         question: input.question,
         policiesText: policiesText,
+        projectsText: projectsText,
     });
     return output!;
   }
