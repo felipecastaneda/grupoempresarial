@@ -1,26 +1,30 @@
 import type { Employee, Announcement, Payroll, PolicyDocument, Project } from './types';
 
 export const employees: Employee[] = [
-  // Management
-  { id: '1', name: 'Alice Johnson', email: 'alice.j@appintel.com', department: 'Management', title: 'CEO', avatar: 'avatar1' },
-  { id: '2', name: 'Bob Williams', email: 'bob.w@appintel.com', department: 'Management', title: 'CTO', avatar: 'avatar2' },
+  // Corporate
+  { id: '1', name: 'Alice Johnson', email: 'alice.j@appintel.com', department: 'Corporate', role: 'Administrator', title: 'CEO', avatar: 'avatar1' },
+  { id: '2', name: 'Bob Williams', email: 'bob.w@appintel.com', department: 'Corporate', role: 'Department Head', title: 'CTO', avatar: 'avatar2' },
 
-  // Development (5)
-  { id: '3', name: 'Charlie Brown', email: 'charlie.b@appintel.com', department: 'Development', title: 'Senior Developer', avatar: 'avatar3' },
-  { id: '4', name: 'Diana Miller', email: 'diana.m@appintel.com', department: 'Development', title: 'Frontend Developer', avatar: 'avatar4' },
-  { id: '5', name: 'Ethan Davis', email: 'ethan.d@appintel.com', department: 'Development', title: 'Backend Developer', avatar: 'avatar5' },
-  { id: '6', name: 'Fiona Garcia', email: 'fiona.g@appintel.com', department: 'Development', title: 'UI/UX Designer', avatar: 'avatar6' },
-  { id: '7', name: 'George Rodriguez', email: 'george.r@appintel.com', department: 'Development', title: 'Junior Developer', avatar: 'avatar7' },
+  // IT
+  { id: '3', name: 'Charlie Brown', email: 'charlie.b@appintel.com', department: 'IT', role: 'Department Head', title: 'IT Manager', avatar: 'avatar3' },
+  { id: '4', name: 'Diana Miller', email: 'diana.m@appintel.com', department: 'IT', role: 'Department Employee', title: 'Frontend Developer', avatar: 'avatar4' },
+  { id: '5', name: 'Ethan Davis', email: 'ethan.d@appintel.com', department: 'IT', role: 'Department Employee', title: 'Backend Developer', avatar: 'avatar5' },
+  
+  // HR
+  { id: '6', name: 'Fiona Garcia', email: 'fiona.g@appintel.com', department: 'HR', role: 'Department Head', title: 'HR Director', avatar: 'avatar6' },
+  { id: '7', name: 'George Rodriguez', email: 'george.r@appintel.com', department: 'HR', role: 'Department Employee', title: 'HR Generalist', avatar: 'avatar7' },
 
-  // Call Center (8)
-  { id: '8', name: 'Hannah Smith', email: 'hannah.s@appintel.com', department: 'Call Center', title: 'Support Lead', avatar: 'avatar8' },
-  { id: '9', name: 'Ian Taylor', email: 'ian.t@appintel.com', department: 'Call Center', title: 'Support Specialist', avatar: 'avatar9' },
-  { id: '10', name: 'Jane Anderson', email: 'jane.a@appintel.com', department: 'Call Center', title: 'Support Specialist', avatar: 'avatar10' },
-  { id: '11', name: 'Kevin Thomas', email: 'kevin.t@appintel.com', department: 'Call Center', title: 'Support Specialist', avatar: 'avatar11' },
-  { id: '12', name: 'Laura Hernandez', email: 'laura.h@appintel.com', department: 'Call Center', title: 'Support Specialist', avatar: 'avatar12' },
-  { id: '13', name: 'Mike Moore', email: 'mike.m@appintel.com', department: 'Call Center', title: 'Support Specialist', avatar: 'avatar13' },
-  { id: '14', name: 'Nora Martin', email: 'nora.m@appintel.com', department: 'Call Center', title: 'Support Specialist', avatar: 'avatar14' },
-  { id: '15', name: 'Oscar Lee', email: 'oscar.l@appintel.com', department: 'Call Center', title: 'Support Specialist', avatar: 'avatar15' },
+  // Call Center
+  { id: '8', name: 'Hannah Smith', email: 'hannah.s@appintel.com', department: 'Call Center', role: 'Department Head', title: 'Support Lead', avatar: 'avatar8' },
+  { id: '9', name: 'Ian Taylor', email: 'ian.t@appintel.com', department: 'Call Center', role: 'Department Employee', title: 'Support Specialist', avatar: 'avatar9' },
+  { id: '10', name: 'Jane Anderson', email: 'jane.a@appintel.com', department: 'Call Center', role: 'Department Employee', title: 'Support Specialist', avatar: 'avatar10' },
+  { id: '11', name: 'Kevin Thomas', email: 'kevin.t@appintel.com', department: 'Call Center', role: 'Department Employee', title: 'Support Specialist', avatar: 'avatar11' },
+  
+  // Accounting
+  { id: '12', name: 'Laura Hernandez', email: 'laura.h@appintel.com', department: 'Accounting', role: 'Department Head', title: 'Finance Manager', avatar: 'avatar12' },
+  { id: '13', name: 'Mike Moore', email: 'mike.m@appintel.com', department: 'Accounting', role: 'Department Employee', title: 'Accountant', avatar: 'avatar13' },
+  { id: '14', name: 'Nora Martin', email: 'nora.m@appintel.com', department: 'Accounting', role: 'Department Employee', title: 'Accountant', avatar: 'avatar14' },
+  { id: '15', name: 'Oscar Lee', email: 'oscar.l@appintel.com', department: 'IT', role: 'Department Employee', title: 'UI/UX Designer', avatar: 'avatar15' },
 ];
 
 export const announcements: Announcement[] = [
@@ -37,7 +41,7 @@ export const payrolls: Payroll[] = [
 ];
 
 export const performanceData = {
-    "Development": "Metrics: 15 projects completed, 95% on-time delivery, 3 major features launched, team morale at 8/10. Challenges: Unexpected scope creep in Project Phoenix. Successes: Successful launch of the new mobile app, which received positive user feedback.",
+    "IT": "Metrics: 15 projects completed, 95% on-time delivery, 3 major features launched, team morale at 8/10. Challenges: Unexpected scope creep in Project Phoenix. Successes: Successful launch of the new mobile app, which received positive user feedback.",
     "Call Center": "Metrics: 92% customer satisfaction rate, average response time of 45 seconds, 5% decrease in call volume due to better documentation. Challenges: High volume of calls during the new feature launch. Successes: Implemented a new ticketing system that improved efficiency by 15%."
 }
 

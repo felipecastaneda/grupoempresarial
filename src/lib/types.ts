@@ -1,8 +1,13 @@
+
+export type Department = 'HR' | 'Accounting' | 'Call Center' | 'IT' | 'Corporate';
+export type Role = 'Administrator' | 'Department Head' | 'Department Employee';
+
 export type Employee = {
   id: string;
   name: string;
   email: string;
-  department: 'Development' | 'Call Center' | 'Management';
+  department: Department;
+  role: Role;
   title: string;
   avatar: string; // Corresponds to ID in placeholder-images.json
 };

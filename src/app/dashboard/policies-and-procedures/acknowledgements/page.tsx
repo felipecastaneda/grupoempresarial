@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useMemo } from "react";
@@ -10,20 +11,40 @@ import { useCollection, useFirebase, useMemoFirebase } from "@/firebase";
 import { collection, query, orderBy } from "firebase/firestore";
 import { Skeleton } from "@/components/ui/skeleton";
 import { employees } from "@/lib/data";
+import { useAuth } from "@/hooks/use-auth";
 
 export default function AcknowledgementsPage() {
     const { firestore } = useFirebase();
+    const { user, employee } = useAuth();
 
     const acknowledgementsQuery = useMemoFirebase(() => {
         return query(collection(firestore, "acknowledgements"), orderBy("acknowledgedAt", "desc"));
     }, [firestore]);
 
-    const { data: acknowledgements, isLoading } = useCollection<AcknowledgedPolicy>(acknowledgementsQuery);
+    const { data: allAcknowledgements, isLoading } = useCollection<AcknowledgedPolicy>(acknowledgementsQuery);
 
     const getDepartmentForUser = (userEmail: string) => {
-        const employee = employees.find(e => e.email === userEmail);
-        return employee?.department || "Unknown";
+        const foundEmployee = employees.find(e => e.email === userEmail);
+        return foundEmployee?.department || "Unknown";
     }
+
+    const filteredAcknowledgements = useMemo(() => {
+        if (!allAcknowledgements || !employee || !user) return [];
+
+        if (employee.role === 'Administrator' || employee.department === 'HR') {
+            return allAcknowledgements;
+        }
+
+        if (employee.role === 'Department Head') {
+            const departmentMembers = employees
+                .filter(e => e.department === employee.department)
+                .map(e => e.email);
+            return allAcknowledgements.filter(ack => departmentMembers.includes(ack.userEmail));
+        }
+
+        return allAcknowledgements.filter(ack => ack.userId === user.uid);
+
+    }, [allAcknowledgements, employee, user]);
 
     return (
         <div className="space-y-6">
@@ -47,7 +68,7 @@ export default function AcknowledgementsPage() {
                             </TableHeader>
                             <TableBody>
                                 {isLoading && (
-                                    [...Array(3)].map((_, i) =>
+                                    [...Array(5)].map((_, i) =>
                                         <TableRow key={i}>
                                             <TableCell><Skeleton className="h-4 w-[250px]" /></TableCell>
                                             <TableCell><Skeleton className="h-4 w-[150px]" /></TableCell>
@@ -56,7 +77,7 @@ export default function AcknowledgementsPage() {
                                         </TableRow>
                                     )
                                 )}
-                                {!isLoading && acknowledgements && acknowledgements.length > 0 ? acknowledgements.map((ack) => (
+                                {!isLoading && filteredAcknowledgements.length > 0 ? filteredAcknowledgements.map((ack) => (
                                     <TableRow key={ack.id}>
                                         <TableCell className="font-medium">{ack.policyTitle}</TableCell>
                                         <TableCell>{ack.userName}</TableCell>
@@ -69,7 +90,7 @@ export default function AcknowledgementsPage() {
                                     !isLoading && (
                                         <TableRow>
                                             <TableCell colSpan={4} className="h-24 text-center">
-                                                No acknowledgements recorded yet.
+                                                No acknowledgements found for your role.
                                             </TableCell>
                                         </TableRow>
                                     )

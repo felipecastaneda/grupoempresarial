@@ -1,3 +1,4 @@
+
 "use client";
 
 import React, { useEffect } from 'react';
@@ -39,7 +40,6 @@ import {
   Briefcase,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
-import { employees } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const navItems = [
@@ -90,7 +90,7 @@ function DashboardNav() {
 }
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
-  const { user, loading, logout } = useAuth();
+  const { user, loading, logout, employee } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -108,7 +108,6 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
-  const employee = employees.find(e => e.email === user?.email);
   const avatar = PlaceHolderImages.find(p => p.id === employee?.avatar);
   const displayName = employee?.name || user?.displayName || user.email || 'Employee';
   const pageTitle = navItems.find(item => item.href === pathname)?.label || 'Dashboard';

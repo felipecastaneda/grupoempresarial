@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useMemo, useState, useEffect } from "react";
@@ -21,7 +22,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { policies, employees } from "@/lib/data";
+import { policies } from "@/lib/data";
 import type { PolicyDocument, AcknowledgedPolicy } from "@/lib/types";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Image from "next/image";
@@ -35,7 +36,7 @@ import { useIsMobile } from "@/hooks/use-mobile";
 export default function PoliciesAndProceduresPage() {
   const [selectedPolicy, setSelectedPolicy] = useState<PolicyDocument | null>(null);
   const { toast } = useToast();
-  const { user } = useAuth();
+  const { user, employee } = useAuth();
   const { firestore } = useFirebase();
   const [isSubmitting, setIsSubmitting] = useState<string | null>(null);
   const isMobile = useIsMobile();
@@ -46,6 +47,8 @@ export default function PoliciesAndProceduresPage() {
   }, [firestore, user]);
 
   const { data: userAcknowledgements, isLoading: isLoadingAcknowledgements, error } = useCollection<AcknowledgedPolicy>(acknowledgementsQuery);
+
+  const canViewAllAcknowledgements = employee?.role === 'Administrator' || employee?.department === 'HR';
 
   const acknowledgedPolicies = useMemo(() => {
     if (!userAcknowledgements) return new Set<string>();
@@ -85,7 +88,6 @@ export default function PoliciesAndProceduresPage() {
     try {
       const ackDocRef = doc(firestore, 'acknowledgements', `${user.uid}_${policy.id}`);
       
-      const employee = employees.find(e => e.email === user.email);
       const displayName = employee?.name || user.displayName || user.email;
 
       const newAcknowledgement = {
@@ -122,12 +124,14 @@ export default function PoliciesAndProceduresPage() {
             <p className="text-muted-foreground">
             Access important company policies and procedure documents. Please review them regularly.
             </p>
-            <Button asChild>
-                <Link href="/dashboard/policies-and-procedures/acknowledgements">
-                    <ListChecks className="mr-2 h-4 w-4" />
-                    View Acknowledgements
-                </Link>
-            </Button>
+            {canViewAllAcknowledgements && (
+                <Button asChild>
+                    <Link href="/dashboard/policies-and-procedures/acknowledgements">
+                        <ListChecks className="mr-2 h-4 w-4" />
+                        View All Acknowledgements
+                    </Link>
+                </Button>
+            )}
         </div>
         <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {policies.map((policy) => {

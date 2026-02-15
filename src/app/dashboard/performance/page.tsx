@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState } from "react";
@@ -9,11 +10,12 @@ import { generateDepartmentSummary } from "@/ai/flows/generate-department-summar
 import { performanceData } from "@/lib/data";
 import { BrainCircuit, Loader2 } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import type { Department } from "@/lib/types";
 
-type Department = "Development" | "Call Center";
+type SupportedDepartment = "IT" | "Call Center";
 
 export default function PerformancePage() {
-  const [department, setDepartment] = useState<Department | null>(null);
+  const [department, setDepartment] = useState<SupportedDepartment | null>(null);
   const [summary, setSummary] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -60,12 +62,12 @@ export default function PerformancePage() {
           </CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col sm:flex-row gap-4">
-          <Select onValueChange={(value: Department) => setDepartment(value)} value={department || ""}>
+          <Select onValueChange={(value: SupportedDepartment) => setDepartment(value)} value={department || ""}>
             <SelectTrigger className="w-full sm:w-[280px]">
               <SelectValue placeholder="Select a department" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="Development">Development</SelectItem>
+              <SelectItem value="IT">IT</SelectItem>
               <SelectItem value="Call Center">Call Center</SelectItem>
             </SelectContent>
           </Select>
