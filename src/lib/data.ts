@@ -2,7 +2,7 @@ import type { Employee, Announcement, Payroll, PolicyDocument, Project } from '.
 
 export const employees: Employee[] = [
   // Corporate
-  { id: '1', name: 'Admin User', email: 'admin@applicationintelligence.com', department: 'Corporate', role: 'Administrator', title: 'CEO', avatar: 'avatar1' },
+  { id: '1', name: 'Admin User', email: 'admin@appintel.com', department: 'Corporate', role: 'Administrator', title: 'CEO', avatar: 'avatar1' },
   { id: '2', name: 'Bob Williams', email: 'bob.w@appintel.com', department: 'Corporate', role: 'Department Head', title: 'CTO', avatar: 'avatar2' },
 
   // IT
