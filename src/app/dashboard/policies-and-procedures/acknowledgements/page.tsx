@@ -2,6 +2,8 @@
 "use client";
 
 import { useMemo } from "react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import type { AcknowledgedPolicy } from "@/lib/types";
@@ -12,6 +14,7 @@ import { collection, query, orderBy } from "firebase/firestore";
 import { Skeleton } from "@/components/ui/skeleton";
 import { employees } from "@/lib/data";
 import { useAuth } from "@/hooks/use-auth";
+import { ArrowLeft } from "lucide-react";
 
 export default function AcknowledgementsPage() {
     const { firestore } = useFirebase();
@@ -50,10 +53,20 @@ export default function AcknowledgementsPage() {
         <div className="space-y-6">
             <Card>
                 <CardHeader>
-                    <CardTitle className="font-headline">Policy Acknowledgements</CardTitle>
-                    <CardDescription>
-                        A record of all employee acknowledgements for company policies and procedures.
-                    </CardDescription>
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <CardTitle className="font-headline">Policy Acknowledgements</CardTitle>
+                            <CardDescription>
+                                A record of all employee acknowledgements for company policies and procedures.
+                            </CardDescription>
+                        </div>
+                        <Button asChild variant="outline">
+                            <Link href="/dashboard/policies-and-procedures">
+                                <ArrowLeft className="mr-2 h-4 w-4" />
+                                Back to Policies
+                            </Link>
+                        </Button>
+                    </div>
                 </CardHeader>
                 <CardContent>
                     <div className="rounded-md border">
