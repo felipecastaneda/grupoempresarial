@@ -39,6 +39,7 @@ import {
   Bot,
   Briefcase,
   UserCog,
+  ClipboardList,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -55,12 +56,17 @@ const navItems = [
   { href: '/dashboard/askme', icon: Bot, label: 'Ask Me' },
 ];
 
+const privilegedNavItems = [
+    { href: '/dashboard/onboarding', icon: ClipboardList, label: 'Onboarding' }
+];
+
 const adminNavItems = [
   { href: '/dashboard/users', icon: UserCog, label: 'Users' }
 ];
 
 function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }) {
   const { employee } = useAuth();
+  const canSeePrivileged = employee?.role === 'Administrator' || employee?.department === 'HR';
 
   return (
     <>
@@ -75,6 +81,20 @@ function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }
       <SidebarContent>
         <SidebarMenu>
           {navItems.map((item) => (
+            <SidebarMenuItem key={item.href}>
+              <SidebarMenuButton
+                asChild
+                isActive={item.href === activeItemHref}
+                tooltip={{ children: item.label, side: 'right' }}
+              >
+                <a href={item.href}>
+                  <item.icon />
+                  <span>{item.label}</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+          {canSeePrivileged && privilegedNavItems.map((item) => (
             <SidebarMenuItem key={item.href}>
               <SidebarMenuButton
                 asChild
@@ -127,7 +147,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
-  const allNavItems = [...navItems, ...(employee?.role === 'Administrator' ? adminNavItems : [])];
+  const canSeePrivileged = employee?.role === 'Administrator' || employee?.department === 'HR';
+  
+  const allNavItems = [
+      ...navItems,
+      ...(canSeePrivileged ? privilegedNavItems : []),
+      ...(employee?.role === 'Administrator' ? adminNavItems : [])
+  ];
   
   const activeItem = allNavItems
     .slice() // Create a copy to avoid mutating the original array
