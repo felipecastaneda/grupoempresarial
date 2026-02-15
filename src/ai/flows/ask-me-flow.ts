@@ -23,7 +23,7 @@ export type AskMeInput = z.infer<typeof ClientInputSchema>;
 const PromptInputSchema = z.object({
   question: z.string().describe("The user's question."),
   policiesText: z.string().describe("The text content of all policy documents combined."),
-  projectsText: z.string().describe("A summary of all current company projects."),
+  projectsText: z.string().describe("A summary of all current company projects, including their URLs."),
 });
 
 const AskMeOutputSchema = z.object({
@@ -78,7 +78,7 @@ const prompt = ai.definePrompt({
 
 If a user asks where to find a page or for a link to a section of the website (like "payroll" or "directory"), you MUST use the 'getInternalLink' tool to provide the correct URL. When you use the tool, format your answer like this: "You can find that information on the [Page Name] page, or by visiting [URL]."
 
-If a user asks about current projects, use the provided project list to summarize them.
+If a user asks about current projects, use the provided project list to summarize them. When you mention a project, you MUST include its URL.
 
 If a question is about policies, use the documents provided. If a question is outside the scope of the provided policies, projects, or tools, you must state that you do not have information on that topic. Do not make up answers.
 
@@ -135,7 +135,7 @@ const askMeFlow = ai.defineFlow(
 
     // 3. Combine project data
     const projectsText = projects
-        .map(p => `Project: ${p.title}\nDescription: ${p.description}`)
+        .map(p => `Project: ${p.title}\nDescription: ${p.description}\nURL: ${p.projectUrl}`)
         .join('\n\n');
 
     // 4. Call the prompt with the question and the combined text.
