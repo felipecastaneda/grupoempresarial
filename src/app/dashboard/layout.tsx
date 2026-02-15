@@ -59,8 +59,7 @@ const adminNavItems = [
   { href: '/dashboard/users', icon: UserCog, label: 'Users' }
 ];
 
-function DashboardNav() {
-  const pathname = usePathname();
+function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }) {
   const { employee } = useAuth();
 
   return (
@@ -79,7 +78,7 @@ function DashboardNav() {
             <SidebarMenuItem key={item.href}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname.startsWith(item.href) && item.href.length > pathname.split('/')[2].length}
+                isActive={item.href === activeItemHref}
                 tooltip={{ children: item.label, side: 'right' }}
               >
                 <a href={item.href}>
@@ -93,7 +92,7 @@ function DashboardNav() {
             <SidebarMenuItem key={item.href}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname.startsWith(item.href)}
+                isActive={item.href === activeItemHref}
                 tooltip={{ children: item.label, side: 'right' }}
               >
                 <a href={item.href}>
@@ -130,10 +129,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
   const allNavItems = [...navItems, ...(employee?.role === 'Administrator' ? adminNavItems : [])];
   
-  const pageTitle = allNavItems
+  const activeItem = allNavItems
     .slice() // Create a copy to avoid mutating the original array
     .sort((a, b) => b.href.length - a.href.length) // Sort by length DESC
-    .find(item => pathname.startsWith(item.href))?.label || 'Dashboard';
+    .find(item => pathname.startsWith(item.href));
+
+  const pageTitle = activeItem?.label || 'Dashboard';
 
   const avatar = PlaceHolderImages.find(p => p.id === employee?.avatar);
   const displayName = employee?.name || user?.displayName || user.email || 'Employee';
@@ -141,7 +142,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   return (
     <SidebarProvider>
       <Sidebar variant="inset" side="left" collapsible="icon">
-        <DashboardNav />
+        <DashboardNav activeItemHref={activeItem?.href} />
       </Sidebar>
       <SidebarInset>
         <header className="flex h-14 items-center gap-4 border-b bg-card px-4 lg:h-[60px] lg:px-6">
