@@ -71,7 +71,7 @@ export default function AskMePage() {
         <CardHeader>
           <CardTitle className="font-headline">Ask Me Anything</CardTitle>
           <CardDescription>
-            Ask questions about company policies. Currently, I am knowledgeable about the Data Security Policy.
+            Ask questions about company policies or any other company related subject. I am very knowledgeable in Policies & Procedures.
           </CardDescription>
         </CardHeader>
         <CardContent className="flex-1 overflow-hidden">

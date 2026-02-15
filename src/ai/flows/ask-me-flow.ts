@@ -11,8 +11,7 @@
 import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import pdf from 'pdf-parse';
-
-const DATA_SECURITY_POLICY_URL = 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.firebasestorage.app/o/policies_procedures%2FData%20Security%20Policy.pdf?alt=media&token=b1a228b9-437d-4eaa-a152-44ecb6775589';
+import { policies } from '@/lib/data';
 
 // Input from the client is just the question.
 const ClientInputSchema = z.object({
@@ -20,10 +19,10 @@ const ClientInputSchema = z.object({
 });
 export type AskMeInput = z.infer<typeof ClientInputSchema>;
 
-// The prompt will need the question and the policy text.
+// The prompt will need the question and the combined policies text.
 const PromptInputSchema = z.object({
   question: z.string().describe("The user's question."),
-  policyText: z.string().describe("The text content of the policy document."),
+  policiesText: z.string().describe("The text content of all policy documents combined."),
 });
 
 const AskMeOutputSchema = z.object({
@@ -40,18 +39,18 @@ const prompt = ai.definePrompt({
   name: 'askMePrompt',
   input: {schema: PromptInputSchema},
   output: {schema: AskMeOutputSchema},
-  prompt: `You are an AI assistant for AppIntel Hub. Your role is to answer questions based *only* on the information provided in the company policy document.
+  prompt: `You are an AI assistant for AppIntel Hub. Your role is to answer questions based *only* on the information provided in the company policy documents.
 
-If a question is outside the scope of the provided policy, you must state that you do not have information on that topic. Do not make up answers.
+If a question is outside the scope of the provided policies, you must state that you do not have information on that topic. Do not make up answers.
 
-Here is the policy document:
+Here are the policy documents:
 ---
-{{policyText}}
+{{policiesText}}
 ---
 
 New question from user: "{{question}}"
 
-Based on the policy, provide an answer to the user's new question.`,
+Based on the policies, provide an answer to the user's new question.`,
 });
 
 const askMeFlow = ai.defineFlow(
@@ -61,21 +60,39 @@ const askMeFlow = ai.defineFlow(
     outputSchema: AskMeOutputSchema,
   },
   async (input) => {
-    // 1. Fetch the PDF from Firebase Storage.
-    const response = await fetch(DATA_SECURITY_POLICY_URL);
-    if (!response.ok) {
-        throw new Error(`Failed to fetch PDF: ${response.statusText}`);
+    // 1. Fetch and parse all policy PDFs in parallel.
+    const policyPromises = policies.map(async (policy) => {
+      if (!policy.pdfUrl) return null;
+      try {
+        const response = await fetch(policy.pdfUrl);
+        if (!response.ok) {
+          console.error(`Failed to fetch PDF for "${policy.title}": ${response.statusText}`);
+          return null;
+        }
+        const pdfBuffer = await response.arrayBuffer();
+        const data = await pdf(Buffer.from(pdfBuffer));
+        return { title: policy.title, text: data.text };
+      } catch (error) {
+        console.error(`Error processing PDF for "${policy.title}":`, error);
+        return null;
+      }
+    });
+
+    const parsedPolicies = (await Promise.all(policyPromises)).filter(p => p !== null);
+
+    // 2. Combine the text from all documents.
+    const policiesText = parsedPolicies
+      .map(p => `--- Policy: ${p!.title} ---\n${p!.text}`)
+      .join('\n\n');
+    
+    if (!policiesText) {
+        return { answer: "I'm sorry, I couldn't load the policy documents. Please try again later." };
     }
-    const pdfBuffer = await response.arrayBuffer();
 
-    // 2. Parse the PDF to extract text content.
-    const data = await pdf(Buffer.from(pdfBuffer));
-    const policyText = data.text;
-
-    // 3. Call the prompt with the question and the extracted text.
+    // 3. Call the prompt with the question and the combined text.
     const { output } = await prompt({
         question: input.question,
-        policyText: policyText,
+        policiesText: policiesText,
     });
     return output!;
   }
