@@ -38,6 +38,7 @@ import {
   BookText,
   Bot,
   Briefcase,
+  UserCog,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -54,8 +55,13 @@ const navItems = [
   { href: '/dashboard/askme', icon: Bot, label: 'Ask Me' },
 ];
 
+const adminNavItems = [
+  { href: '/dashboard/users', icon: UserCog, label: 'Users' }
+];
+
 function DashboardNav() {
   const pathname = usePathname();
+  const { employee } = useAuth();
 
   return (
     <>
@@ -73,7 +79,21 @@ function DashboardNav() {
             <SidebarMenuItem key={item.href}>
               <SidebarMenuButton
                 asChild
-                isActive={pathname === item.href}
+                isActive={pathname.startsWith(item.href) && item.href.length > pathname.split('/')[2].length}
+                tooltip={{ children: item.label, side: 'right' }}
+              >
+                <a href={item.href}>
+                  <item.icon />
+                  <span>{item.label}</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+          {employee?.role === 'Administrator' && adminNavItems.map((item) => (
+            <SidebarMenuItem key={item.href}>
+              <SidebarMenuButton
+                asChild
+                isActive={pathname.startsWith(item.href)}
                 tooltip={{ children: item.label, side: 'right' }}
               >
                 <a href={item.href}>
@@ -108,9 +128,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
+  const allNavItems = [...navItems, ...(employee?.role === 'Administrator' ? adminNavItems : [])];
+  
+  const pageTitle = allNavItems
+    .slice() // Create a copy to avoid mutating the original array
+    .sort((a, b) => b.href.length - a.href.length) // Sort by length DESC
+    .find(item => pathname.startsWith(item.href))?.label || 'Dashboard';
+
   const avatar = PlaceHolderImages.find(p => p.id === employee?.avatar);
   const displayName = employee?.name || user?.displayName || user.email || 'Employee';
-  const pageTitle = navItems.find(item => item.href === pathname)?.label || 'Dashboard';
 
   return (
     <SidebarProvider>
