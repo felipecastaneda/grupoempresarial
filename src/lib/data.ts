@@ -47,7 +47,7 @@ export const policies: PolicyDocument[] = [
     title: 'Code of Conduct',
     description: 'Our principles for ethical and professional behavior.',
     imageId: 'policy-conduct',
-    pdfUrl: 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.appspot.com/o/policies%2Fcode_of_conduct.pdf?alt=media',
+    pdfUrl: 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.firebasestorage.app/o/policies_procedures%2FCode%20of%20Conduct%20Policy%20%E2%80%93%20Remote%20Work%20Edition.pdf?alt=media&token=3a2ebea1-76f6-4c61-9a84-1932f22d4737',
   },
   {
     id: '2',
