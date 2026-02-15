@@ -30,6 +30,7 @@ import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
 import { useFirebase, useMemoFirebase, useCollection } from "@/firebase";
 import { collection, doc, query, where, setDoc } from "firebase/firestore";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function PoliciesAndProceduresPage() {
   const [selectedPolicy, setSelectedPolicy] = useState<PolicyDocument | null>(null);
@@ -37,6 +38,7 @@ export default function PoliciesAndProceduresPage() {
   const { user } = useAuth();
   const { firestore } = useFirebase();
   const [isSubmitting, setIsSubmitting] = useState<string | null>(null);
+  const isMobile = useIsMobile();
 
   const acknowledgementsQuery = useMemoFirebase(() => {
     if (!user) return null;
@@ -61,6 +63,14 @@ export default function PoliciesAndProceduresPage() {
     }
   }, [error, toast]);
 
+  const handleViewDocument = (policy: PolicyDocument) => {
+    if (!policy.pdfUrl) return;
+    if (isMobile) {
+      window.open(policy.pdfUrl, '_blank');
+    } else {
+      setSelectedPolicy(policy);
+    }
+  };
 
   const handleAcknowledge = async (policy: PolicyDocument) => {
     if (!user || !user.email) {
@@ -144,7 +154,7 @@ export default function PoliciesAndProceduresPage() {
                 </CardHeader>
                 <CardContent className="flex-grow" />
                 <CardFooter className="flex flex-col gap-2">
-                  <Button className="w-full" onClick={() => setSelectedPolicy(policy)}>
+                  <Button className="w-full" onClick={() => handleViewDocument(policy)}>
                     <FileText className="mr-2 h-4 w-4" />
                     View Document
                   </Button>
