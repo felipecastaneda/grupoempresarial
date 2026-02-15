@@ -17,11 +17,11 @@ interface CompanyEvent {
 
 // Sample data
 const events: CompanyEvent[] = [
-  { date: new Date(2023, 8, 15), title: "Q3 Town Hall Meeting", type: "corporate" },
-  { date: new Date(2023, 9, 7), title: "Annual Company Picnic", type: "social" },
-  { date: new Date(2023, 9, 20), title: "IT Tech Talk", type: "department" },
-  { date: new Date(2023, 10, 10), title: "Charity Bake Sale", type: "social" },
-  { date: new Date(2023, 11, 15), title: "End of Year Party", type: "social" },
+  { date: new Date(2026, 1, 20), title: "Q3 Town Hall Meeting", type: "corporate" },
+  { date: new Date(2026, 1, 22), title: "Annual Company Picnic", type: "social" },
+  { date: new Date(2026, 1, 25), title: "IT Tech Talk", type: "department" },
+  { date: new Date(2026, 1, 26), title: "Charity Bake Sale", type: "social" },
+  { date: new Date(2026, 1, 26), title: "End of Year Party", type: "social" },
 ];
 
 const eventDays = events.map((event) => event.date);

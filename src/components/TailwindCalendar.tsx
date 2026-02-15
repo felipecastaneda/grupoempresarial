@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 
 export interface TailwindCalendarProps {
   selected?: Date;
@@ -13,17 +13,20 @@ export default function TailwindCalendar({
   onSelect,
   eventDays = [],
 }: TailwindCalendarProps) {
-  const referenceDate = selected ? new Date(selected) : new Date();
+  const [currentMonth, setCurrentMonth] = useState(
+    selected ? new Date(selected) : new Date()
+  );
+
   const monthStart = new Date(
-    referenceDate.getFullYear(),
-    referenceDate.getMonth(),
+    currentMonth.getFullYear(),
+    currentMonth.getMonth(),
     1
   );
 
   const year = monthStart.getFullYear();
   const monthIndex = monthStart.getMonth();
   const daysInMonth = new Date(year, monthIndex + 1, 0).getDate();
-  const startDay = monthStart.getDay(); // 0 = Sunday
+  const startDay = monthStart.getDay();
 
   const isEventDay = (d: number) =>
     eventDays.some(
@@ -42,16 +45,44 @@ export default function TailwindCalendar({
 
   return (
     <div className="isolate space-y-4">
-      <h2 className="text-xl font-semibold text-center">
-        {monthStart.toLocaleString("default", { month: "long" })} {year}
-      </h2>
 
+      {/* Month switcher */}
+      <div className="flex items-center justify-between">
+        <button
+          onClick={() =>
+            setCurrentMonth(
+              new Date(year, monthIndex - 1, 1)
+            )
+          }
+          className="px-2 py-1 rounded hover:bg-accent"
+        >
+          ←
+        </button>
+
+        <h2 className="text-xl font-semibold text-center">
+          {monthStart.toLocaleString("default", { month: "long" })} {year}
+        </h2>
+
+        <button
+          onClick={() =>
+            setCurrentMonth(
+              new Date(year, monthIndex + 1, 1)
+            )
+          }
+          className="px-2 py-1 rounded hover:bg-accent"
+        >
+          →
+        </button>
+      </div>
+
+      {/* Weekdays */}
       <div className="grid grid-cols-7 text-center text-sm font-medium text-muted-foreground">
         {["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"].map((d) => (
           <div key={d}>{d}</div>
         ))}
       </div>
 
+      {/* Days */}
       <div className="grid grid-cols-7 gap-1 text-center">
         {Array.from({ length: startDay }).map((_, i) => (
           <div key={`empty-${i}`} />
