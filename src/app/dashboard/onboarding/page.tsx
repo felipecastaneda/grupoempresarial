@@ -167,37 +167,39 @@ export default function OnboardingPage() {
             <CardTitle>Onboarding Progress</CardTitle>
         </CardHeader>
         <CardContent>
-            <div className="flex items-center">
-            {onboardingSteps.map((step, index) => (
-                <React.Fragment key={step.id}>
-                <div className="flex flex-col items-center text-center cursor-pointer" onClick={() => handleStepClick(step.id)}>
-                    <div
-                    className={cn(
-                        "flex items-center justify-center w-12 h-12 rounded-full text-xl transition-colors",
-                        step.id < currentStep ? "bg-green-600 text-white" : "",
-                        step.id === currentStep ? "bg-primary text-primary-foreground" : "",
-                        step.id > currentStep ? "bg-muted text-muted-foreground" : ""
-                    )}
-                    >
-                    {step.id < currentStep ? <Check className="w-6 h-6" /> : step.icon}
-                    </div>
-                    <p className={cn(
-                        "mt-2 text-sm font-medium",
-                        step.id === currentStep ? "text-primary" : "text-muted-foreground"
-                    )}>{step.title}</p>
-                    <p className={cn(
-                        "text-xs",
-                        step.id === currentStep ? "text-primary" : "text-muted-foreground"
-                    )}>{step.subtitle}</p>
-                </div>
-                {index < onboardingSteps.length - 1 && (
-                    <div className={cn(
-                        "flex-1 h-1 mx-2",
-                        step.id < currentStep ? "bg-green-600" : "bg-muted"
-                    )} />
-                )}
-                </React.Fragment>
-            ))}
+            <div className="overflow-x-auto">
+              <div className="flex items-start pt-2">
+              {onboardingSteps.map((step, index) => (
+                  <React.Fragment key={step.id}>
+                  <div className="flex flex-col items-center text-center cursor-pointer shrink-0 w-28" onClick={() => handleStepClick(step.id)}>
+                      <div
+                      className={cn(
+                          "flex items-center justify-center w-12 h-12 rounded-full text-xl transition-colors",
+                          step.id < currentStep ? "bg-green-600 text-white" : "",
+                          step.id === currentStep ? "bg-primary text-primary-foreground" : "",
+                          step.id > currentStep ? "bg-muted text-muted-foreground" : ""
+                      )}
+                      >
+                      {step.id < currentStep ? <Check className="w-6 h-6" /> : step.icon}
+                      </div>
+                      <p className={cn(
+                          "mt-2 text-sm font-medium",
+                          step.id === currentStep ? "text-primary" : "text-muted-foreground"
+                      )}>{step.title}</p>
+                      <p className={cn(
+                          "text-xs",
+                          step.id === currentStep ? "text-primary" : "text-muted-foreground"
+                      )}>{step.subtitle}</p>
+                  </div>
+                  {index < onboardingSteps.length - 1 && (
+                      <div className={cn(
+                          "flex-1 h-1 mx-2 mt-5",
+                          step.id < currentStep ? "bg-green-600" : "bg-muted"
+                      )} />
+                  )}
+                  </React.Fragment>
+              ))}
+              </div>
             </div>
         </CardContent>
       </Card>
