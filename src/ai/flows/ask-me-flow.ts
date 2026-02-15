@@ -12,7 +12,7 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 import pdf from 'pdf-parse';
 
-const DATA_SECURITY_POLICY_URL = 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.firebasestorage.app/o/policies_procedures%2FData%20Security%20Policy.pdf?alt=media&token=77a13b9f-03dd-426c-b0af-0bc84a4fc5e1';
+const DATA_SECURITY_POLICY_URL = 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.firebasestorage.app/o/policies_procedures%2FData%20Security%20Policy.pdf?alt=media&token=b1a228b9-437d-4eaa-a152-44ecb6775589';
 
 // Input from the client is just the question.
 const ClientInputSchema = z.object({

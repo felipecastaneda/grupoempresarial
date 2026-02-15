@@ -54,14 +54,14 @@ export const policies: PolicyDocument[] = [
     title: 'Remote Work Policy',
     description: 'Guidelines and best practices for working from home.',
     imageId: 'policy-remote',
-    pdfUrl: 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.appspot.com/o/policies%2Fremote_work_policy.pdf?alt=media',
+    pdfUrl: 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.firebasestorage.app/o/policies_procedures%2FRemote%20Work%20Policy.pdf?alt=media&token=f0ae0728-e03f-4e8b-a7c9-e8b7cbd09e61',
   },
   {
     id: '3',
     title: 'Data Security Policy',
     description: 'How we protect company and customer data.',
     imageId: 'policy-security',
-    pdfUrl: 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.firebasestorage.app/o/policies_procedures%2FData%20Security%20Policy.pdf?alt=media&token=77a13b9f-03dd-426c-b0af-0bc84a4fc5e1',
+    pdfUrl: 'https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.firebasestorage.app/o/policies_procedures%2FData%20Security%20Policy.pdf?alt=media&token=b1a228b9-437d-4eaa-a152-44ecb6775589',
   },
 ];
 
