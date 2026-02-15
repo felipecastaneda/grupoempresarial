@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
@@ -26,12 +27,11 @@ import { policies } from "@/lib/data";
 import type { PolicyDocument, AcknowledgedPolicy } from "@/lib/types";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import Image from "next/image";
-import { FileText, CheckCircle, ListChecks, Loader2 } from "lucide-react";
+import { FileText, CheckCircle, ListChecks, Loader2, Download, Mail } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
 import { useFirebase, useMemoFirebase, useCollection } from "@/firebase";
 import { collection, doc, query, where, setDoc } from "firebase/firestore";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 export default function PoliciesAndProceduresPage() {
   const [selectedPolicy, setSelectedPolicy] = useState<PolicyDocument | null>(null);
@@ -39,7 +39,6 @@ export default function PoliciesAndProceduresPage() {
   const { user, employee } = useAuth();
   const { firestore } = useFirebase();
   const [isSubmitting, setIsSubmitting] = useState<string | null>(null);
-  const isMobile = useIsMobile();
 
   const acknowledgementsQuery = useMemoFirebase(() => {
     if (!user) return null;
@@ -68,11 +67,7 @@ export default function PoliciesAndProceduresPage() {
 
   const handleViewDocument = (policy: PolicyDocument) => {
     if (!policy.pdfUrl) return;
-    if (isMobile) {
-      window.open(policy.pdfUrl, '_blank');
-    } else {
-      setSelectedPolicy(policy);
-    }
+    setSelectedPolicy(policy);
   };
 
   const handleAcknowledge = async (policy: PolicyDocument) => {
@@ -120,7 +115,7 @@ export default function PoliciesAndProceduresPage() {
   return (
     <>
       <div className="space-y-6">
-        <div className="flex justify-between items-center">
+        <div className="flex flex-col gap-4 sm:flex-row sm:justify-between sm:items-center">
             <p className="text-muted-foreground">
             Access important company policies and procedure documents. Please review them regularly.
             </p>
@@ -203,7 +198,7 @@ export default function PoliciesAndProceduresPage() {
             <DialogTitle>{selectedPolicy?.title}</DialogTitle>
           </DialogHeader>
           {selectedPolicy?.pdfUrl && (
-            <div className="flex-grow">
+            <div className="flex-grow overflow-hidden">
               <iframe
                 src={selectedPolicy.pdfUrl}
                 className="w-full h-full"
@@ -211,6 +206,20 @@ export default function PoliciesAndProceduresPage() {
               />
             </div>
           )}
+          <DialogFooter className="pt-4 flex-wrap gap-2">
+            <Button variant="outline" asChild>
+                <a href={selectedPolicy?.pdfUrl} download>
+                    <Download className="mr-2 h-4 w-4" />
+                    Download
+                </a>
+            </Button>
+             <Button variant="outline" asChild>
+                <a href={`mailto:?subject=Company Policy: ${selectedPolicy?.title}&body=Please find our company policy document attached here: ${selectedPolicy?.pdfUrl}`}>
+                    <Mail className="mr-2 h-4 w-4" />
+                    Email
+                </a>
+            </Button>
+          </DialogFooter>
         </DialogContent>
       </Dialog>
     </>
