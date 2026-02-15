@@ -198,7 +198,7 @@ export default function PoliciesAndProceduresPage() {
             <DialogTitle>{selectedPolicy?.title}</DialogTitle>
           </DialogHeader>
           {selectedPolicy?.pdfUrl && (
-            <div className="flex-grow overflow-hidden">
+            <div className="flex-grow overflow-auto">
               <iframe
                 src={selectedPolicy.pdfUrl}
                 className="w-full h-full"
