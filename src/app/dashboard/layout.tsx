@@ -40,6 +40,10 @@ import {
   Briefcase,
   UserCog,
   ClipboardList,
+  HeartPulse,
+  Landmark,
+  Scale,
+  CalendarDays,
 } from 'lucide-react';
 import { Logo } from '@/components/Logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
@@ -54,6 +58,10 @@ const navItems = [
   { href: '/dashboard/performance', icon: BrainCircuit, label: 'Performance' },
   { href: '/dashboard/policies-and-procedures', icon: BookText, label: 'Policies & Procedures' },
   { href: '/dashboard/askme', icon: Bot, label: 'Ask Me' },
+  { href: '/dashboard/health-and-safety', icon: HeartPulse, label: 'Health and Safety' },
+  { href: '/dashboard/office-of-the-ceo', icon: Landmark, label: 'Office of the CEO' },
+  { href: '/dashboard/legal', icon: Scale, label: 'Legal' },
+  { href: '/dashboard/activities-calendar', icon: CalendarDays, label: 'Activities Calendar' },
 ];
 
 const privilegedNavItems = [
