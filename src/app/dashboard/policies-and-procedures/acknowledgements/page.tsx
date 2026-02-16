@@ -34,11 +34,11 @@ export default function AcknowledgementsPage() {
     const filteredAcknowledgements = useMemo(() => {
         if (!allAcknowledgements || !employee || !user) return [];
 
-        if (employee.role === 'Administrator' || employee.department === 'HR') {
+        if (employee.roles.includes('Administrator') || employee.department === 'HR') {
             return allAcknowledgements;
         }
 
-        if (employee.role === 'Department Head') {
+        if (employee.roles.includes('Department Head')) {
             const departmentMembers = employees
                 .filter(e => e.department === employee.department)
                 .map(e => e.email);

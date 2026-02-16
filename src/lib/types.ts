@@ -7,7 +7,7 @@ export type Employee = {
   name: string;
   email: string;
   department: Department;
-  role: Role;
+  roles: Role[];
   title: string;
   avatar: string; // Corresponds to ID in placeholder-images.json
 };

@@ -26,12 +26,12 @@ export default function UsersPage() {
   const router = useRouter();
 
   useEffect(() => {
-    if (!loading && employee?.role !== 'Administrator') {
+    if (!loading && !employee?.roles.includes('Administrator')) {
       router.push('/dashboard');
     }
   }, [employee, loading, router]);
 
-  if (loading || !employee || employee.role !== 'Administrator') {
+  if (loading || !employee || !employee.roles.includes('Administrator')) {
     return (
       <div className="space-y-4">
         <Skeleton className="h-8 w-1/4" />
@@ -90,9 +90,13 @@ export default function UsersPage() {
                       <Badge variant="secondary">{user.department}</Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge variant={user.role === 'Administrator' ? 'default' : 'outline'}>
-                        {user.role}
-                      </Badge>
+                      <div className="flex flex-wrap gap-1">
+                        {user.roles.map((role) => (
+                           <Badge key={role} variant={role === 'Administrator' ? 'default' : 'outline'}>
+                             {role}
+                           </Badge>
+                        ))}
+                      </div>
                     </TableCell>
                     <TableCell className="text-right">
                       <DropdownMenu>

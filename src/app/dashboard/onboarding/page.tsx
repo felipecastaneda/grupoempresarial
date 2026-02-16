@@ -122,7 +122,7 @@ export default function OnboardingPage() {
   const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
 
-  const canViewPage = employee?.role === 'Administrator' || employee?.department === 'HR';
+  const canViewPage = employee?.roles.includes('Administrator') || employee?.department === 'HR';
 
   useEffect(() => {
     if (!loading && !canViewPage) {
@@ -167,11 +167,11 @@ export default function OnboardingPage() {
             <CardTitle>Onboarding Progress</CardTitle>
         </CardHeader>
         <CardContent>
-            <div className="overflow-x-auto">
-              <div className="flex items-start pt-2">
+            <div className="overflow-x-auto pb-4">
+              <div className="flex items-start pt-2 w-max">
               {onboardingSteps.map((step, index) => (
                   <React.Fragment key={step.id}>
-                  <div className="flex flex-col items-center text-center cursor-pointer shrink-0 w-28" onClick={() => handleStepClick(step.id)}>
+                  <div className="flex flex-col items-center text-center cursor-pointer shrink-0 w-32" onClick={() => handleStepClick(step.id)}>
                       <div
                       className={cn(
                           "flex items-center justify-center w-12 h-12 rounded-full text-xl transition-colors",

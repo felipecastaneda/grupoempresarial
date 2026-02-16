@@ -74,7 +74,7 @@ const adminNavItems = [
 
 function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }) {
   const { employee } = useAuth();
-  const canSeePrivileged = employee?.role === 'Administrator' || employee?.department === 'HR';
+  const canSeePrivileged = employee?.roles.includes('Administrator') || employee?.department === 'HR';
 
   return (
     <>
@@ -116,7 +116,7 @@ function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
-          {employee?.role === 'Administrator' && adminNavItems.map((item) => (
+          {employee?.roles.includes('Administrator') && adminNavItems.map((item) => (
             <SidebarMenuItem key={item.href}>
               <SidebarMenuButton
                 asChild
@@ -155,12 +155,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     );
   }
 
-  const canSeePrivileged = employee?.role === 'Administrator' || employee?.department === 'HR';
+  const canSeePrivileged = employee?.roles.includes('Administrator') || employee?.department === 'HR';
   
   const allNavItems = [
       ...navItems,
       ...(canSeePrivileged ? privilegedNavItems : []),
-      ...(employee?.role === 'Administrator' ? adminNavItems : [])
+      ...(employee?.roles.includes('Administrator') ? adminNavItems : [])
   ];
   
   const activeItem = allNavItems
