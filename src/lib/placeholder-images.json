@@ -97,6 +97,12 @@
       "imageHint": "person portrait"
     },
     {
+      "id": "phassan",
+      "description": "Avatar for an employee",
+      "imageUrl": "https://firebasestorage.googleapis.com/v0/b/company-website-ba4a8.firebasestorage.app/o/app_images%2Fpaul_hassan.jpeg?alt=media&token=98c56120-9fec-499d-834d-5d9584ebfb0b",
+      "imageHint": "person portrait"
+    },
+    {
       "id": "announcement1",
       "description": "A presenter on a stage at a town hall meeting",
       "imageUrl": "https://images.unsplash.com/photo-1581930197572-16ad76d3d926?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx0b3duJTIwaGFsbHxlbnwwfHx8fDE3NzA3NTkyMTN8MA&ixlib=rb-4.1.0&q=80&w=1080",

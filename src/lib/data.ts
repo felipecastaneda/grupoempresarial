@@ -2,13 +2,13 @@ import type { Employee, Announcement, Payroll, PolicyDocument, Project } from '.
 
 export const employees: Employee[] = [
   // Corporate
-  { id: '1', name: 'Admin User', email: 'admin@applicationintelligence.ai', department: 'Corporate', roles: ['Administrator'], title: 'CEO', avatar: 'avatar1' },
-  { id: '2', name: 'Bob Williams', email: 'bob.w@appintel.com', department: 'Corporate', roles: ['Department Head'], title: 'CTO', avatar: 'avatar2' },
+  { id: '1', name: 'Admin User', email: 'admin@applicationintelligence.ai', department: 'Corporate', roles: ['Administrator'], title: 'CTO', avatar: 'avatar1' },
+  { id: '2', name: 'Paul Hassan Admin', email: 'phassan-admin@test.com', department: 'Corporate', roles: ['Administrator'], title: 'CEO', avatar: 'phassan' },
 
   // IT
   { id: '3', name: 'Charlie Brown', email: 'charlie.b@appintel.com', department: 'IT', roles: ['Department Head'], title: 'IT Manager', avatar: 'avatar3' },
   { id: '4', name: 'Diana Miller', email: 'diana.m@appintel.com', department: 'IT', roles: ['Department Employee'], title: 'Frontend Developer', avatar: 'avatar4' },
-  { id: '5', name: 'Ethan Davis', email: 'ethan.d@appintel.com', department: 'IT', roles: ['Department Employee'], title: 'Backend Developer', avatar: 'avatar5' },
+  { id: '5', name: 'Paul Hassan User', email: 'phassan-user@test.com', department: 'IT', roles: ['Department Employee'], title: 'Backend Developer', avatar: 'phassan' },
   
   // HR
   { id: '6', name: 'Fiona Garcia', email: 'fiona.g@appintel.com', department: 'HR', roles: ['Department Head'], title: 'HR Director', avatar: 'avatar6' },
@@ -43,7 +43,13 @@ export const payrolls: Payroll[] = [
 export const performanceData = {
     "IT": "Metrics: 15 projects completed, 95% on-time delivery, 3 major features launched, team morale at 8/10. Challenges: Unexpected scope creep in Project Phoenix. Successes: Successful launch of the new mobile app, which received positive user feedback.",
     "Call Center": "Metrics: 92% customer satisfaction rate, average response time of 45 seconds, 5% decrease in call volume due to better documentation. Challenges: High volume of calls during the new feature launch. Successes: Implemented a new ticketing system that improved efficiency by 15%."
-}
+};
+
+export const personalPerformanceData: Record<string, string> = {
+    "diana.m@appintel.com": "Diana has been a top performer, consistently delivering high-quality code for the frontend team. She exceeded expectations on the mobile app project, contributing significantly to its successful launch. Areas for improvement include taking more initiative in code reviews.",
+    "ian.t@appintel.com": "Ian demonstrates excellent customer service skills and has received positive feedback from clients. His average response time is well below the team average. He could improve by taking on more complex support tickets.",
+    "charlie.b@appintel.com": "As IT Manager, Charlie has successfully overseen all major projects this quarter. His leadership on the mobile app deployment was critical. He needs to delegate more tasks to his team to avoid burnout."
+};
 
 export const policies: PolicyDocument[] = [
   {
