@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
@@ -143,7 +142,6 @@ export default function PerformancePage() {
             <p className="text-muted-foreground whitespace-pre-wrap">{summary}</p>
           </CardContent>
         </Card>
-      </Card>
       )}
     </div>
   );
