@@ -44,6 +44,7 @@ import {
   Landmark,
   Scale,
   CalendarDays,
+  Building2,
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { LanguageSwitcher } from '@/components/language-switcher';
@@ -71,6 +72,14 @@ const privilegedNavItems = [
 
 const adminNavItems = [
   { href: '/dashboard/users', icon: UserCog, labelKey: 'users' }
+];
+
+const businessUnits = [
+  { name: 'Interra' },
+  { name: 'Meson' },
+  { name: 'Perunsa' },
+  { name: 'Folium' },
+  { name: 'Core Industries' },
 ];
 
 function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }) {
@@ -128,6 +137,21 @@ function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }
                   <item.icon />
                   <span>{t[item.labelKey]}</span>
                 </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+          <li className="px-2 pb-1 pt-4 text-xs font-semibold uppercase tracking-wide text-sidebar-foreground/60 group-data-[collapsible=icon]:hidden">
+            {t.businessUnits}
+          </li>
+          {businessUnits.map((unit) => (
+            <SidebarMenuItem key={unit.name}>
+              <SidebarMenuButton
+                type="button"
+                disabled
+                tooltip={{ children: unit.name, side: 'right' }}
+              >
+                <Building2 />
+                <span>{unit.name}</span>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
