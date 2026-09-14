@@ -46,33 +46,36 @@ import {
   CalendarDays,
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { LanguageSwitcher } from '@/components/language-switcher';
+import { useLanguage } from '@/contexts/language-context';
 
 const navItems = [
-  { href: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
-  { href: '/dashboard/activities-calendar', icon: CalendarDays, label: 'Activities Calendar' },
-  { href: '/dashboard/announcements', icon: Megaphone, label: 'Announcements' },
-  { href: '/dashboard/askme', icon: Bot, label: 'Ask Me' },
-  { href: '/dashboard/current-projects', icon: Briefcase, label: 'Current Projects' },
-  { href: '/dashboard/directory', icon: Users, label: 'Directory' },
-  { href: '/dashboard/documents', icon: Folder, label: 'Documents' },
-  { href: '/dashboard/health-and-safety', icon: HeartPulse, label: 'Health and Safety' },
-  { href: '/dashboard/legal', icon: Scale, label: 'Legal' },
-  { href: '/dashboard/office-of-the-ceo', icon: Landmark, label: 'Office of the CEO' },
-  { href: '/dashboard/payroll', icon: CircleDollarSign, label: 'Payroll' },
-  { href: '/dashboard/performance', icon: BrainCircuit, label: 'Performance' },
-  { href: '/dashboard/policies-and-procedures', icon: BookText, label: 'Policies & Procedures' },
+  { href: '/dashboard', icon: LayoutDashboard, labelKey: 'dashboard' },
+  { href: '/dashboard/activities-calendar', icon: CalendarDays, labelKey: 'activitiesCalendar' },
+  { href: '/dashboard/announcements', icon: Megaphone, labelKey: 'announcements' },
+  { href: '/dashboard/askme', icon: Bot, labelKey: 'askMe' },
+  { href: '/dashboard/current-projects', icon: Briefcase, labelKey: 'currentProjects' },
+  { href: '/dashboard/directory', icon: Users, labelKey: 'directory' },
+  { href: '/dashboard/documents', icon: Folder, labelKey: 'documents' },
+  { href: '/dashboard/health-and-safety', icon: HeartPulse, labelKey: 'healthAndSafety' },
+  { href: '/dashboard/legal', icon: Scale, labelKey: 'legal' },
+  { href: '/dashboard/office-of-the-ceo', icon: Landmark, labelKey: 'officeOfTheCEO' },
+  { href: '/dashboard/payroll', icon: CircleDollarSign, labelKey: 'payroll' },
+  { href: '/dashboard/performance', icon: BrainCircuit, labelKey: 'performance' },
+  { href: '/dashboard/policies-and-procedures', icon: BookText, labelKey: 'policiesAndProcedures' },
 ];
 
 const privilegedNavItems = [
-    { href: '/dashboard/onboarding', icon: ClipboardList, label: 'Onboarding' }
+    { href: '/dashboard/onboarding', icon: ClipboardList, labelKey: 'onboarding' }
 ];
 
 const adminNavItems = [
-  { href: '/dashboard/users', icon: UserCog, label: 'Users' }
+  { href: '/dashboard/users', icon: UserCog, labelKey: 'users' }
 ];
 
 function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }) {
   const { employee } = useAuth();
+  const { t } = useLanguage();
   const canSeePrivileged = employee?.roles.includes('Administrator') || employee?.department === 'HR';
 
   return (
@@ -91,11 +94,11 @@ function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }
               <SidebarMenuButton
                 asChild
                 isActive={item.href === activeItemHref}
-                tooltip={{ children: item.label, side: 'right' }}
+                tooltip={{ children: t[item.labelKey], side: 'right' }}
               >
                 <a href={item.href}>
                   <item.icon />
-                  <span>{item.label}</span>
+                  <span>{t[item.labelKey]}</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -105,11 +108,11 @@ function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }
               <SidebarMenuButton
                 asChild
                 isActive={item.href === activeItemHref}
-                tooltip={{ children: item.label, side: 'right' }}
+                tooltip={{ children: t[item.labelKey], side: 'right' }}
               >
                 <a href={item.href}>
                   <item.icon />
-                  <span>{item.label}</span>
+                  <span>{t[item.labelKey]}</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -119,11 +122,11 @@ function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }
               <SidebarMenuButton
                 asChild
                 isActive={item.href === activeItemHref}
-                tooltip={{ children: item.label, side: 'right' }}
+                tooltip={{ children: t[item.labelKey], side: 'right' }}
               >
                 <a href={item.href}>
                   <item.icon />
-                  <span>{item.label}</span>
+                  <span>{t[item.labelKey]}</span>
                 </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
@@ -136,6 +139,7 @@ function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const { user, loading, logout, employee } = useAuth();
+  const { t } = useLanguage();
   const router = useRouter();
   const pathname = usePathname();
 
@@ -166,7 +170,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     .sort((a, b) => b.href.length - a.href.length) // Sort by length DESC
     .find(item => pathname.startsWith(item.href));
 
-  const pageTitle = activeItem?.label || 'Dashboard';
+  const pageTitle = activeItem ? t[activeItem.labelKey] : t.dashboard;
 
   const avatar = PlaceHolderImages.find(p => p.id === employee?.avatar);
   const displayName = employee?.name || user?.displayName || user.email || 'Employee';
@@ -182,6 +186,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           <h1 className="text-lg font-semibold md:text-xl font-headline flex-1">
             {pageTitle}
           </h1>
+          <LanguageSwitcher />
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
@@ -200,11 +205,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
               <DropdownMenuSeparator />
               <DropdownMenuItem onClick={() => router.push('/dashboard')}>
                 <LayoutDashboard className="mr-2 h-4 w-4" />
-                <span>My Portal</span>
+                <span>{t.myPortal}</span>
               </DropdownMenuItem>
               <DropdownMenuItem onClick={logout}>
                 <LogOut className="mr-2 h-4 w-4" />
-                <span>Logout</span>
+                <span>{t.logout}</span>
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
