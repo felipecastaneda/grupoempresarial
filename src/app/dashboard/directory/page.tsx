@@ -8,7 +8,7 @@ export default function DirectoryPage() {
   return (
     <div>
       <p className="text-muted-foreground mb-6">
-        Find and connect with colleagues across Application Intelligence.
+        Encuentra y conecta con colegas de Grupo Empresarial.
       </p>
       <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
         {employees.map((employee) => {

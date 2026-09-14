@@ -1,8 +1,8 @@
-# **App Name**: AppIntel Hub
+# **App Name**: Grupo Empresarial
 
 ## Core Features:
 
-- Company Overview: Provide a general overview of Application Intelligence, showcasing its mission, values, and history.
+- Company Overview: Provide a general overview of Grupo Empresarial, showcasing its mission, values, and history.
 - Department Showcase: Highlight the Development and Call Center departments, detailing their roles, responsibilities, and key personnel (5 developers, 8 call center staff).
 - Employee Login: Implement a secure login and authentication system for employees to access the intranet.
 - Intranet Access: Allow authenticated employees to view intranet information, including announcements, payroll details, and a company directory. It is necessary to integrate with Firestore.

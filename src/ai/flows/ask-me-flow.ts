@@ -52,7 +52,7 @@ const pageRoutes = {
 const getInternalLink = ai.defineTool(
     {
       name: 'getInternalLink',
-      description: 'Returns the internal URL for a specific page within the AppIntel Hub website. Use this when a user asks for a link or where to find a specific page or information.',
+      description: 'Returns the internal URL for a specific page within the Grupo Empresarial intranet. Use this when a user asks for a link or where to find a specific page or information.',
       inputSchema: z.object({
         pageName: z.string().describe('The name of the page to get the link for (e.g., "Payroll", "Directory"). Should be lowercase.'),
       }),
@@ -74,7 +74,7 @@ const prompt = ai.definePrompt({
   input: {schema: PromptInputSchema},
   output: {schema: AskMeOutputSchema},
   tools: [getInternalLink],
-  prompt: `You are an AI assistant for AppIntel Hub. Your role is to answer questions based *only* on the information provided in the company policy documents, the current project list, and the available tools.
+  prompt: `You are an AI assistant for Grupo Empresarial. Your role is to answer questions based *only* on the information provided in the company policy documents, the current project list, and the available tools.
 
 You should be as helpful as possible. If the user's question relates to a topic that has a dedicated page on the website (like "payroll", "directory", "policies", or "announcements"), you SHOULD use the 'getInternalLink' tool to provide a link to that page in your answer, even if the user does not explicitly ask for it. For example, if asked about payroll, you would answer the question and also provide a link to the payroll page.
 

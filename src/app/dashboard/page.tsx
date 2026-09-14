@@ -4,9 +4,9 @@ import { Megaphone, Users, CircleDollarSign } from "lucide-react";
 export default function DashboardPage() {
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-bold font-headline">Welcome to the AppIntel Hub Intranet</h1>
+      <h1 className="text-3xl font-bold font-headline">Bienvenido al intranet de Grupo Empresarial</h1>
       <p className="text-muted-foreground">
-        This is your central hub for company information, resources, and tools.
+        Este es tu centro para la información, recursos y herramientas de la empresa.
       </p>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
         <Card>

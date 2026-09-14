@@ -45,7 +45,6 @@ import {
   Scale,
   CalendarDays,
 } from 'lucide-react';
-import { Logo } from '@/components/Logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const navItems = [
@@ -80,9 +79,8 @@ function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }
     <>
       <SidebarHeader>
         <Link href="/" className="flex items-center gap-2">
-          <Logo className="w-7 h-7 flex-shrink-0 text-primary" />
           <span className="font-semibold text-lg font-headline text-sidebar-foreground group-data-[collapsible=icon]:hidden">
-            AppIntel Hub
+            Grupo Empresarial
           </span>
         </Link>
       </SidebarHeader>

@@ -2,18 +2,19 @@
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Code, Headset } from 'lucide-react';
+import { Code, Headset, Building2, Users, Briefcase, ShieldCheck, BriefcaseBusiness } from 'lucide-react';
 import Image from 'next/image';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
-import { Logo } from '@/components/Logo';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious, type CarouselApi } from '@/components/ui/carousel';
 import React from 'react';
 import Autoplay from "embla-carousel-autoplay";
+import { useLanguage } from '@/contexts/language-context';
 
 export default function Home() {
   const heroImage = PlaceHolderImages.find(p => p.id === "hero");
+  const { t } = useLanguage();
   const [api, setApi] = React.useState<CarouselApi>()
   const [current, setCurrent] = React.useState(0)
   const [count, setCount] = React.useState(0)
@@ -52,20 +53,17 @@ export default function Home() {
           <div className="absolute inset-0 bg-primary/80" />
           <div className="container mx-auto px-4 relative">
             <div className="max-w-3xl text-center mx-auto">
-              <div className="flex flex-col items-center mb-8">
-                <Logo
-                  className="h-24 w-24"
-                  primaryColor="hsl(var(--primary-foreground))"
-                  accentColor="hsl(var(--accent))"
-                  showText={true}
-                />
-              </div>
               <h1 className="text-4xl md:text-6xl font-bold text-primary-foreground font-headline">
-                Application Intelligence
+                {t.brand}
               </h1>
               <p className="mt-4 text-lg md:text-xl text-primary-foreground/90">
-                Engineering the Future of Software, Today.
+                {t.tagline}
               </p>
+              <div className="mt-8 flex justify-center">
+                <Button size="lg" className="bg-white text-primary hover:bg-slate-100">
+                  {t.heroButton}
+                </Button>
+              </div>
             </div>
           </div>
         </section>
@@ -82,12 +80,12 @@ export default function Home() {
                   <div className="p-1">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
                       <div>
-                        <h2 className="text-3xl font-bold text-foreground font-headline mb-4">About AppIntel Hub</h2>
+                        <h2 className="text-3xl font-bold text-foreground font-headline mb-4">{t.companyOverview}</h2>
                         <p className="text-muted-foreground mb-4">
-                          Application Intelligence was founded with a singular mission: to deliver cutting-edge software solutions that drive business success. We believe in the power of technology to transform industries and empower organizations.
+                          {t.companyOverviewText}
                         </p>
                         <p className="text-muted-foreground">
-                          Our team of dedicated professionals combines expertise with a passion for innovation, ensuring that every project we undertake is not just a success, but a benchmark for quality and performance. Our values of integrity, collaboration, and excellence are at the core of everything we do.
+                          Each business unit retains its own operational rhythm, while the shared intranet keeps leadership, employees, and departments aligned around the same priorities, policies, and workflows.
                         </p>
                       </div>
                       <div className="flex justify-center">
@@ -112,7 +110,7 @@ export default function Home() {
                           We are thrilled to welcome our new partners. Our team is dedicated to ensuring a smooth onboarding process and providing exceptional support to help you achieve your goals.
                         </p>
                         <p className="text-muted-foreground">
-                          We look forward to a successful collaboration and are excited to see the innovative solutions we can build together. Welcome to the AppIntel Hub family!
+                          Esperamos una colaboración exitosa y estamos emocionados por ver las soluciones innovadoras que podemos crear juntos. ¡Bienvenido a la familia de Grupo Empresarial!
                         </p>
                       </div>
                       <div className="flex justify-center">
@@ -132,12 +130,12 @@ export default function Home() {
                   <div className="p-1">
                     <div className="grid md:grid-cols-2 gap-12 items-center">
                       <div>
-                        <h2 className="text-3xl font-bold text-foreground font-headline mb-4">Artificial Intelligence in Development</h2>
+                        <h2 className="text-3xl font-bold text-foreground font-headline mb-4">Tecnología y operación</h2>
                         <p className="text-muted-foreground mb-4">
-                          At AppIntel Hub, we leverage the power of Artificial Intelligence to accelerate development cycles, enhance code quality, and deliver smarter solutions. Our AI-driven tools assist in everything from automated testing to intelligent code completion.
+                          En Grupo Empresarial utilizamos tecnología para acelerar procesos, mejorar la calidad operativa y generar decisiones más inteligentes en cada unidad de negocio.
                         </p>
                         <p className="text-muted-foreground">
-                          By integrating AI into our workflow, we are pushing the boundaries of what's possible, creating more robust, efficient, and intelligent applications for our clients.
+                          Integrando herramientas digitales en cada área, fortalecemos la eficiencia, la colaboración y la continuidad operativa de la organización.
                         </p>
                       </div>
                       <div className="flex justify-center">
@@ -174,35 +172,57 @@ export default function Home() {
         <section id="departments" className="py-16 md:py-24 bg-card">
           <div className="container mx-auto px-4">
             <h2 className="text-3xl font-bold text-center text-foreground font-headline mb-12">
-              Our Core Departments
+              {t.businessUnits}
             </h2>
-            <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-              <Card>
-                <CardHeader className="flex-row items-center gap-4">
-                  <div className="bg-accent text-accent-foreground p-3 rounded-full">
-                    <Code className="w-6 h-6" />
-                  </div>
-                  <CardTitle className="font-headline">Development</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    Our team expert developers crafts robust, scalable, and innovative software solutions. From backend architecture to frontend design, we build the tools that power your business.
-                  </p>
-                </CardContent>
-              </Card>
-              <Card>
-                <CardHeader className="flex-row items-center gap-4">
-                  <div className="bg-accent text-accent-foreground p-3 rounded-full">
-                    <Headset className="w-6 h-6" />
-                  </div>
-                  <CardTitle className="font-headline">Call Center</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">
-                    With dedicated support specialists, our call center provides exceptional customer service and technical support, ensuring a seamless experience for all our clients and their users.
-                  </p>
-                </CardContent>
-              </Card>
+            <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-8 max-w-6xl mx-auto">
+              {[
+                { icon: Building2, title: t.unitBodeguitas },
+                { icon: BriefcaseBusiness, title: t.unitSnacks },
+                { icon: Users, title: t.unitDesihratados },
+                { icon: ShieldCheck, title: t.unitAdministracion },
+              ].map(({ icon: Icon, title }) => (
+                <Card key={title}>
+                  <CardHeader className="flex-row items-center gap-4">
+                    <div className="bg-accent text-accent-foreground p-3 rounded-full">
+                      <Icon className="w-6 h-6" />
+                    </div>
+                    <CardTitle className="font-headline text-base">{title}</CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-muted-foreground text-sm">
+                      Shared teams, common workflows, and centralized access to HR, payroll, policies, safety, and operations across the business group.
+                    </p>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+
+            <div className="mt-16">
+              <h2 className="text-3xl font-bold text-center text-foreground font-headline mb-12">
+                {t.coreDepartments}
+              </h2>
+              <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+                {[
+                  { icon: Code, title: t.departmentHR },
+                  { icon: Headset, title: t.departmentCalendar },
+                  { icon: ShieldCheck, title: t.departmentSafety },
+                  { icon: Briefcase, title: t.departmentPolicies },
+                ].map(({ icon: Icon, title }) => (
+                  <Card key={title}>
+                    <CardHeader className="flex-row items-center gap-4">
+                      <div className="bg-accent text-accent-foreground p-3 rounded-full">
+                        <Icon className="w-6 h-6" />
+                      </div>
+                      <CardTitle className="font-headline">{title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-muted-foreground">
+                        Cross-functional support for employees across the business ecosystem, with shared access to critical information and operational processes.
+                      </p>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
             </div>
           </div>
         </section>

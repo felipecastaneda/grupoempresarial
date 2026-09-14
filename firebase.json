@@ -32,7 +32,7 @@
     }
   ],
   "apphosting": {
-    "backendId": "appintel-app",
+    "backendId": "grupo-empresarial-app",
     "rootDir": "/",
     "ignore": [
       "node_modules",

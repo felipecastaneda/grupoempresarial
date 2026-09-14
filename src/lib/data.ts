@@ -2,7 +2,7 @@ import type { Employee, Announcement, Payroll, PolicyDocument, Project } from '.
 
 export const employees: Employee[] = [
   // Corporate
-  { id: '1', name: 'Admin User', email: 'admin@applicationintelligence.ai', department: 'Corporate', roles: ['Administrator'], title: 'CTO', avatar: 'avatar1' },
+  { id: '1', name: 'Felipe Castañeda', email: 'castaneda.felipe@gmail.com', department: 'Corporate', roles: ['Administrator'], title: 'Developer', avatar: 'avatar1' },
   { id: '2', name: 'Paul Hassan Admin', email: 'phassan-admin@test.com', department: 'Corporate', roles: ['Administrator'], title: 'CEO', avatar: 'phassan' },
 
   // IT
@@ -46,6 +46,7 @@ export const performanceData = {
 };
 
 export const personalPerformanceData: Record<string, string> = {
+    "castaneda.felipe@gmail.com": "Felipe is developing this intranet and is responsible for the platform architecture, user experience, and delivery flow. He is focused on building a stable, polished experience for the business and should continue documenting key decisions and technical direction.",
     "diana.m@appintel.com": "Diana has been a top performer, consistently delivering high-quality code for the frontend team. She exceeded expectations on the mobile app project, contributing significantly to its successful launch. Areas for improvement include taking more initiative in code reviews.",
     "ian.t@appintel.com": "Ian demonstrates excellent customer service skills and has received positive feedback from clients. His average response time is well below the team average. He could improve by taking on more complex support tickets.",
     "charlie.b@appintel.com": "As IT Manager, Charlie has successfully overseen all major projects this quarter. His leadership on the mobile app deployment was critical. He needs to delegate more tasks to his team to avoid burnout."

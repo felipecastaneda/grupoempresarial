@@ -17,10 +17,13 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { employees } from "@/lib/data";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { Loader2, LogOut, LayoutDashboard } from "lucide-react";
+import { LanguageSwitcher } from '@/components/language-switcher';
+import { useLanguage } from '@/contexts/language-context';
 
 export function Header() {
   const { user, loading, logout } = useAuth();
   const router = useRouter();
+  const { t } = useLanguage();
 
   const renderAuthSection = () => {
     if (loading) {
@@ -29,9 +32,12 @@ export function Header() {
 
     if (!user) {
       return (
-        <Button asChild>
-          <Link href="/login">Employee Login</Link>
-        </Button>
+        <div className="flex items-center gap-3">
+          <LanguageSwitcher />
+          <Button asChild>
+            <Link href="/login">{t.login}</Link>
+          </Button>
+        </div>
       );
     }
 
@@ -40,32 +46,35 @@ export function Header() {
     const displayName = employee?.name || user.displayName || user.email || 'Employee';
 
     return (
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
-            <Avatar className="h-8 w-8">
-              {avatar && <AvatarImage src={avatar.imageUrl} alt={displayName} />}
-              <AvatarFallback>{displayName?.charAt(0)}</AvatarFallback>
-            </Avatar>
-            <span className="sr-only">Toggle user menu</span>
-          </Button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-          <DropdownMenuLabel>
-            <p className="font-medium">{displayName}</p>
-            <p className="text-xs text-muted-foreground font-normal">{user.email}</p>
-          </DropdownMenuLabel>
-          <DropdownMenuSeparator />
-          <DropdownMenuItem onClick={() => router.push('/dashboard')}>
-            <LayoutDashboard className="mr-2 h-4 w-4" />
-            <span>My Portal</span>
-          </DropdownMenuItem>
-          <DropdownMenuItem onClick={logout}>
-            <LogOut className="mr-2 h-4 w-4" />
-            <span>Logout</span>
-          </DropdownMenuItem>
-        </DropdownMenuContent>
-      </DropdownMenu>
+      <div className="flex items-center gap-3">
+        <LanguageSwitcher />
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon" className="rounded-full h-8 w-8">
+              <Avatar className="h-8 w-8">
+                {avatar && <AvatarImage src={avatar.imageUrl} alt={displayName} />}
+                <AvatarFallback>{displayName?.charAt(0)}</AvatarFallback>
+              </Avatar>
+              <span className="sr-only">Toggle user menu</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuLabel>
+              <p className="font-medium">{displayName}</p>
+              <p className="text-xs text-muted-foreground font-normal">{user.email}</p>
+            </DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuItem onClick={() => router.push('/dashboard')}>
+              <LayoutDashboard className="mr-2 h-4 w-4" />
+              <span>{t.myPortal}</span>
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={logout}>
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>{t.logout}</span>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      </div>
     );
   }
 
@@ -74,9 +83,8 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center gap-2">
-            <Logo className="h-8 w-8 text-primary" />
             <span className="font-bold text-lg font-headline text-foreground">
-              AppIntel Hub
+              {t.brand}
             </span>
           </Link>
           <nav>

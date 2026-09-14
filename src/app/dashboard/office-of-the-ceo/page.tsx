@@ -32,18 +32,18 @@ export default function OfficeOfTheCEOPage() {
             </div>
           </div>
           <CardContent className="p-6">
-            <h3 className="text-xl font-semibold mb-4">A Message to Our Team</h3>
+            <h3 className="text-xl font-semibold mb-4">Un mensaje para nuestro equipo</h3>
             <div className="prose prose-sm max-w-none text-muted-foreground">
               <p>
-                Welcome to the heart of AppIntel Hub. Our journey is one of passion, innovation, and relentless pursuit of excellence. We are not just building software; we are crafting the future of application intelligence.
+                Bienvenido al corazón de Grupo Empresarial. Nuestro camino está marcado por la pasión, la innovación y la búsqueda constante de la excelencia. No solo estamos construyendo software; estamos creando el futuro de nuestra organización.
               </p>
               <p>
-                Our success is built on the collective talent and dedication of every single person in this company. Each line of code, every customer interaction, and every new idea contributes to our shared vision. I am incredibly proud of what we have accomplished together and even more excited for what lies ahead.
+                Nuestro éxito se basa en el talento colectivo y la dedicación de cada persona en esta empresa. Cada línea de código, cada interacción con clientes y cada idea nueva contribuyen a nuestra visión compartida. Estoy orgulloso de lo que hemos logrado juntos y aún más emocionado por lo que viene.
               </p>
               <p>
-                Let's continue to challenge the status quo, to support one another, and to build a company that not only leads the industry but also makes a meaningful impact.
+                Continuemos desafiando el status quo, apoyándonos mutuamente y construyendo una empresa que no solo lidere la industria, sino que también tenga un impacto real.
               </p>
-              <p>Thank you for being a part of this journey.</p>
+              <p>Gracias por ser parte de este recorrido.</p>
             </div>
           </CardContent>
         </Card>

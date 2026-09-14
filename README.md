@@ -1,6 +1,6 @@
-# AppIntel Hub: The Modern Company Intranet
+# Grupo Empresarial: The Modern Company Intranet
 
-Welcome to AppIntel Hub, a comprehensive intranet portal designed to streamline internal communications and operations for Application Intelligence. This project is built with a modern tech stack and leverages the power of Generative AI to provide intelligent features.
+Welcome to Grupo Empresarial, a comprehensive intranet portal designed to streamline internal communications and operations across the business group. This project is built with a modern tech stack and leverages the power of Generative AI to provide intelligent features.
 
 ## ✨ Features
 
@@ -102,7 +102,7 @@ A brief overview of the key directories:
 
 Authentication is handled by Firebase Authentication using email and password. A set of mock employee users are defined in `src/lib/data.ts` which you can use to log in.
 
-- **Admin Email**: `admin@applicationintelligence.ai`
+- **Admin Email**: `castaneda.felipe@gmail.com`
 - **HR Email**: `fiona.g@appintel.com`
 - **Department Head Email**: `charlie.b@appintel.com`
 - **Employee Email**: `diana.m@appintel.com`

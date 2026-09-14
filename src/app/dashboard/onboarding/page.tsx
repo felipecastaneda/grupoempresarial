@@ -216,7 +216,7 @@ export default function OnboardingPage() {
             </div>
             <div className="space-y-2">
                 <Label htmlFor="email">Email Address</Label>
-                <Input id="email" type="email" placeholder="jane.d@appintel.com" />
+                <Input id="email" type="email" placeholder="jane.d@grupoempresarial.com" />
             </div>
             <div className="space-y-2">
                 <Label htmlFor="startDate">Start Date</Label>

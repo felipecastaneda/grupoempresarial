@@ -12,7 +12,6 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "@/components/ui/input";
 import { useAuth } from "@/hooks/use-auth";
 import { useToast } from "@/hooks/use-toast";
-import { Logo } from "@/components/Logo";
 import { Loader2, Eye, EyeOff } from "lucide-react";
 
 const loginSchema = z.object({
@@ -56,9 +55,9 @@ export default function LoginPage() {
     <div className="flex min-h-screen items-center justify-center bg-background p-4">
       <Card className="w-full max-w-sm">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 flex justify-center">
-            <Link href="/" aria-label="Back to homepage">
-              <Logo className="h-12 w-12" />
+          <div className="mb-2 text-center">
+            <Link href="/" className="text-lg font-semibold text-primary" aria-label="Back to homepage">
+              Grupo Empresarial
             </Link>
           </div>
           <CardTitle className="text-2xl font-headline">Employee Login</CardTitle>
@@ -74,7 +73,7 @@ export default function LoginPage() {
                   <FormItem>
                     <FormLabel>Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="employee@appintel.com" {...field} />
+                      <Input placeholder="employee@grupoempresarial.com" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
