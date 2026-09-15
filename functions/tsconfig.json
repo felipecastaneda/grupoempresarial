@@ -4,9 +4,10 @@
     "src"
   ],
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "nodenext",
     "noImplicitReturns": true,
     "outDir": "lib",
+    "rootDir": "src",
     "sourceMap": true,
     "strict": true,
     "target": "es2017",

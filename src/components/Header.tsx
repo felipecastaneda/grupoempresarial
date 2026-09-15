@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Button } from "./ui/button";
-import { Logo } from "./Logo";
 import { useAuth } from "@/hooks/use-auth";
 import {
   DropdownMenu,
@@ -34,6 +33,9 @@ export function Header() {
       return (
         <div className="flex items-center gap-3">
           <LanguageSwitcher />
+          <Button asChild variant="outline" className="hidden sm:inline-flex">
+            <Link href="/customer/login">{t.customerPortal}</Link>
+          </Button>
           <Button asChild>
             <Link href="/login">{t.login}</Link>
           </Button>
@@ -83,11 +85,16 @@ export function Header() {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link href="/" className="flex items-center gap-2">
-            <span className="font-bold text-lg font-headline text-foreground">
+            <span className="font-semibold text-lg font-headline tracking-tight text-foreground">
               {t.brand}
             </span>
           </Link>
-          <nav>
+          <nav className="hidden items-center gap-7 md:flex">
+            <a href="#about" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">{t.navAbout}</a>
+            <a href="#capabilities" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">{t.navCapabilities}</a>
+            <a href="#contact" className="text-sm font-medium text-muted-foreground transition-colors hover:text-foreground">{t.navContact}</a>
+          </nav>
+          <nav className="flex items-center gap-3">
             {renderAuthSection()}
           </nav>
         </div>

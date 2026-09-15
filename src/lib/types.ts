@@ -62,3 +62,30 @@ export type Project = {
   imageUrlId: string;
   projectUrl: string;
 };
+
+export type CustomerProfile = {
+  uid: string;
+  email: string;
+  displayName: string;
+  accountType: 'customer';
+  organizationId: string;
+  organizationName: string;
+};
+
+export type CustomerDocument = {
+  name: string;
+  description: string;
+  downloadUrl: string;
+  organizationId: string;
+};
+
+export type CustomerRequest = {
+  subject: string;
+  message: string;
+  status: 'open' | 'in-progress' | 'closed';
+  organizationId: string;
+  userId: string;
+  createdAt: string;
+  response?: string;
+  respondedAt?: string;
+};

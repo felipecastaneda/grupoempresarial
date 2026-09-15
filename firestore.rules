@@ -2,9 +2,82 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function customerProfile() {
+      return get(/databases/$(database)/documents/customerProfiles/$(request.auth.uid));
+    }
+
+    function isCustomer() {
+      return signedIn() && customerProfile().data.accountType == 'customer';
+    }
+
+    // Any signed-in account that has no customer profile is treated as staff.
+    // (Fine-grained role checks still happen client-side, same as the rest of the app.)
+    function isEmployee() {
+      return signedIn() && !exists(/databases/$(database)/documents/customerProfiles/$(request.auth.uid));
+    }
+
+    function belongsToCustomerOrganization(resourceData) {
+      return isCustomer() && resourceData.organizationId == customerProfile().data.organizationId;
+    }
+
+    match /customerProfiles/{userId} {
+      allow read: if signedIn() && (request.auth.uid == userId || isEmployee());
+      allow create: if signedIn()
+        && request.auth.uid == userId
+        && request.resource.data.uid == userId
+        && request.resource.data.accountType == 'customer'
+        && request.resource.data.organizationId == 'unassigned';
+      allow update: if signedIn()
+        && resource.data.uid == userId
+        && request.resource.data.uid == resource.data.uid
+        && request.resource.data.accountType == resource.data.accountType
+        && (
+          // The customer can update their own profile, but never their own organization.
+          (request.auth.uid == userId && request.resource.data.organizationId == resource.data.organizationId)
+          // Staff can assign/re-assign the organization, but not impersonate the customer's identity.
+          || (isEmployee() && request.resource.data.email == resource.data.email)
+        );
+      allow delete: if false;
+    }
+
+    match /customerDocuments/{documentId} {
+      allow read: if belongsToCustomerOrganization(resource.data) || isEmployee();
+      allow create: if isEmployee()
+        && request.resource.data.organizationId is string
+        && request.resource.data.organizationId != '';
+      allow update, delete: if isEmployee();
+    }
+
+    match /customerRequests/{requestId} {
+      allow read: if isEmployee()
+        || (belongsToCustomerOrganization(resource.data) && resource.data.userId == request.auth.uid);
+      allow create: if isCustomer()
+        && request.resource.data.organizationId == customerProfile().data.organizationId
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.status == 'open';
+      // Staff triage requests (status + response) but can't rewrite who filed them or why.
+      allow update: if isEmployee()
+        && request.resource.data.organizationId == resource.data.organizationId
+        && request.resource.data.userId == resource.data.userId
+        && request.resource.data.subject == resource.data.subject
+        && request.resource.data.message == resource.data.message;
+      allow delete: if false;
+    }
+
+    match /acknowledgements/{acknowledgementId} {
+      allow read: if signedIn() && !exists(/databases/$(database)/documents/customerProfiles/$(request.auth.uid));
+      allow create, update: if signedIn()
+        && !exists(/databases/$(database)/documents/customerProfiles/$(request.auth.uid))
+        && request.resource.data.userId == request.auth.uid;
+      allow delete: if false;
+    }
+
     match /{document=**} {
-      // Allow read and write access for any authenticated user.
-      allow read, write: if request.auth != null;
+      allow read, write: if false;
     }
   }
 }

@@ -47,7 +47,7 @@ export default function PoliciesAndProceduresPage() {
 
   const { data: userAcknowledgements, isLoading: isLoadingAcknowledgements, error } = useCollection<AcknowledgedPolicy>(acknowledgementsQuery);
 
-  const canViewAllAcknowledgements = employee?.role === 'Administrator' || employee?.department === 'HR';
+  const canViewAllAcknowledgements = employee?.roles.includes('Administrator') || employee?.department === 'HR';
 
   const acknowledgedPolicies = useMemo(() => {
     if (!userAcknowledgements) return new Set<string>();

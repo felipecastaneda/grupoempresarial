@@ -13,6 +13,14 @@
       "fields": [
         { "fieldPath": "acknowledgedAt", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "customerRequests",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "organizationId", "order": "ASCENDING" },
+        { "fieldPath": "userId", "order": "ASCENDING" }
+      ]
     }
   ],
   "fieldOverrides": []

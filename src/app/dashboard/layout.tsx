@@ -13,6 +13,10 @@ import {
   SidebarMenu,
   SidebarMenuItem,
   SidebarMenuButton,
+  SidebarMenuSub,
+  SidebarMenuSubItem,
+  SidebarMenuSubButton,
+  SidebarMenuAction,
   SidebarInset,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
@@ -44,11 +48,14 @@ import {
   Scale,
   CalendarDays,
   Building2,
+  ChevronRight,
+  HeartHandshake,
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { LanguageSwitcher } from '@/components/language-switcher';
 import { useLanguage, type TranslationKey } from '@/contexts/language-context';
 import type { LucideIcon } from 'lucide-react';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from '@/components/ui/collapsible';
 
 type DashboardNavItem = {
   href: string;
@@ -81,7 +88,8 @@ const privilegedNavItems: DashboardNavItem[] = [
 ];
 
 const adminNavItems: DashboardNavItem[] = [
-  { href: '/dashboard/users', icon: UserCog, labelKey: 'users' }
+  { href: '/dashboard/users', icon: UserCog, labelKey: 'users' },
+  { href: '/dashboard/customer-portal', icon: HeartHandshake, labelKey: 'customerPortal' },
 ];
 
 const businessUnits = [
@@ -96,6 +104,8 @@ function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }
   const { employee } = useAuth();
   const { t } = useLanguage();
   const canSeePrivileged = employee?.roles.includes('Administrator') || employee?.department === 'HR';
+  const dashboardItem = navItems[0];
+  const DashboardIcon = dashboardItem.icon;
 
   return (
     <>
@@ -108,48 +118,46 @@ function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
-          {navItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
+          <Collapsible defaultOpen={true} className="group/collapsible">
+            <SidebarMenuItem>
               <SidebarMenuButton
                 asChild
-                isActive={item.href === activeItemHref}
-                tooltip={{ children: t[item.labelKey], side: 'right' }}
+                isActive={dashboardItem.href === activeItemHref}
+                tooltip={{ children: t[dashboardItem.labelKey], side: 'right' }}
               >
-                <a href={item.href}>
-                  <item.icon />
-                  <span>{t[item.labelKey]}</span>
+                <a href={dashboardItem.href}>
+                  <DashboardIcon />
+                  <span>{t[dashboardItem.labelKey]}</span>
                 </a>
               </SidebarMenuButton>
+              <CollapsibleTrigger asChild>
+                <SidebarMenuAction aria-label="Toggle navigation">
+                  <ChevronRight className="transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                </SidebarMenuAction>
+              </CollapsibleTrigger>
+              <CollapsibleContent>
+                <SidebarMenuSub>
+                  {[
+                    ...navItems.slice(1),
+                    ...(canSeePrivileged ? privilegedNavItems : []),
+                    ...(employee?.roles.includes('Administrator') ? adminNavItems : []),
+                  ].map((item) => (
+                    <SidebarMenuSubItem key={item.href}>
+                      <SidebarMenuSubButton
+                        asChild
+                        isActive={item.href === activeItemHref}
+                      >
+                        <a href={item.href}>
+                          <item.icon />
+                          <span>{t[item.labelKey]}</span>
+                        </a>
+                      </SidebarMenuSubButton>
+                    </SidebarMenuSubItem>
+                  ))}
+                </SidebarMenuSub>
+              </CollapsibleContent>
             </SidebarMenuItem>
-          ))}
-          {canSeePrivileged && privilegedNavItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
-              <SidebarMenuButton
-                asChild
-                isActive={item.href === activeItemHref}
-                tooltip={{ children: t[item.labelKey], side: 'right' }}
-              >
-                <a href={item.href}>
-                  <item.icon />
-                  <span>{t[item.labelKey]}</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
-          {employee?.roles.includes('Administrator') && adminNavItems.map((item) => (
-            <SidebarMenuItem key={item.href}>
-              <SidebarMenuButton
-                asChild
-                isActive={item.href === activeItemHref}
-                tooltip={{ children: t[item.labelKey], side: 'right' }}
-              >
-                <a href={item.href}>
-                  <item.icon />
-                  <span>{t[item.labelKey]}</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          </Collapsible>
           <li className="px-2 pb-1 pt-4 text-xs font-semibold uppercase tracking-wide text-sidebar-foreground/60 group-data-[collapsible=icon]:hidden">
             {t.businessUnits}
           </li>
