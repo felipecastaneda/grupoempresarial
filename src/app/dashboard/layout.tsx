@@ -41,16 +41,27 @@ import {
   UserCog,
   ClipboardList,
   HeartPulse,
-  Landmark,
   Scale,
   CalendarDays,
   Building2,
 } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { LanguageSwitcher } from '@/components/language-switcher';
-import { useLanguage } from '@/contexts/language-context';
+import { useLanguage, type TranslationKey } from '@/contexts/language-context';
+import type { LucideIcon } from 'lucide-react';
 
-const navItems = [
+type DashboardNavItem = {
+  href: string;
+  icon: LucideIcon;
+  labelKey: TranslationKey;
+};
+
+type DashboardRoute = {
+  href: string;
+  labelKey: TranslationKey;
+};
+
+const navItems: DashboardNavItem[] = [
   { href: '/dashboard', icon: LayoutDashboard, labelKey: 'dashboard' },
   { href: '/dashboard/activities-calendar', icon: CalendarDays, labelKey: 'activitiesCalendar' },
   { href: '/dashboard/announcements', icon: Megaphone, labelKey: 'announcements' },
@@ -60,26 +71,25 @@ const navItems = [
   { href: '/dashboard/documents', icon: Folder, labelKey: 'documents' },
   { href: '/dashboard/health-and-safety', icon: HeartPulse, labelKey: 'healthAndSafety' },
   { href: '/dashboard/legal', icon: Scale, labelKey: 'legal' },
-  { href: '/dashboard/office-of-the-ceo', icon: Landmark, labelKey: 'officeOfTheCEO' },
   { href: '/dashboard/payroll', icon: CircleDollarSign, labelKey: 'payroll' },
   { href: '/dashboard/performance', icon: BrainCircuit, labelKey: 'performance' },
   { href: '/dashboard/policies-and-procedures', icon: BookText, labelKey: 'policiesAndProcedures' },
 ];
 
-const privilegedNavItems = [
+const privilegedNavItems: DashboardNavItem[] = [
     { href: '/dashboard/onboarding', icon: ClipboardList, labelKey: 'onboarding' }
 ];
 
-const adminNavItems = [
+const adminNavItems: DashboardNavItem[] = [
   { href: '/dashboard/users', icon: UserCog, labelKey: 'users' }
 ];
 
 const businessUnits = [
-  { name: 'Interra' },
-  { name: 'Meson' },
-  { name: 'Perunsa' },
-  { name: 'Folium' },
-  { name: 'Core Industries' },
+  { slug: 'interra', name: 'Interra' },
+  { slug: 'meson', name: 'Meson' },
+  { slug: 'perunsa', name: 'Perunsa' },
+  { slug: 'folium', name: 'Folium' },
+  { slug: 'core-industries', name: 'Core Industries' },
 ];
 
 function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }) {
@@ -146,12 +156,14 @@ function DashboardNav({ activeItemHref }: { activeItemHref: string | undefined }
           {businessUnits.map((unit) => (
             <SidebarMenuItem key={unit.name}>
               <SidebarMenuButton
-                type="button"
-                disabled
+                asChild
+                isActive={activeItemHref === `/dashboard/business-units/${unit.slug}`}
                 tooltip={{ children: unit.name, side: 'right' }}
               >
-                <Building2 />
-                <span>{unit.name}</span>
+                <a href={`/dashboard/business-units/${unit.slug}`}>
+                  <Building2 />
+                  <span>{unit.name}</span>
+                </a>
               </SidebarMenuButton>
             </SidebarMenuItem>
           ))}
@@ -186,7 +198,11 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   const allNavItems = [
       ...navItems,
       ...(canSeePrivileged ? privilegedNavItems : []),
-      ...(employee?.roles.includes('Administrator') ? adminNavItems : [])
+      ...(employee?.roles.includes('Administrator') ? adminNavItems : []),
+      ...businessUnits.map((unit): DashboardRoute => ({
+        href: `/dashboard/business-units/${unit.slug}`,
+        labelKey: 'businessUnits',
+      })),
   ];
   
   const activeItem = allNavItems

@@ -79,16 +79,16 @@ export const policies: PolicyDocument[] = [
 export const projects: Project[] = [
   {
     id: '1',
-    title: 'Travelogis',
-    description: 'A multi-faceted web application that combines two distinct business verticals under one platform: a Travel Agency and a Cargo Logistics service. It is designed with a sophisticated role-based access system, providing tailored experiences for Customers, Agents, Supervisors, and Administrators. The application leverages a modern tech stack, including Next.js and React, and heavily integrates Generative AI (via Genkit) to power many of its unique features. It is also fully internationalized, supporting both English and Spanish.',
+    title: 'Snacks',
+    description: 'Healthy snacks made with carefully selected ingredients for convenient, flavorful nutrition.',
     imageUrlId: 'project-travelogis',
-    projectUrl: 'http://travelogis.com',
+    projectUrl: '/dashboard/current-projects',
   },
   {
     id: '2',
-    title: 'EstimateMyJunk',
-    description: 'EstimateMyJunk (also referred to as JunkSnap Estimator) is a sophisticated, full-stack junk removal platform designed to automate the process of providing service estimates using artificial intelligence. The app streamlines the interaction between people who have junk to remove and the service providers who pick it up. It removes the friction of "calling for a quote" by allowing users to get an instant, AI-driven price estimate just by taking a photo of their trash.',
+    title: 'Dehidrated Products',
+    description: 'Dehydrated vegetables, spices, and fruits that preserve flavor and quality for everyday use.',
     imageUrlId: 'project-estimatemyjunk',
-    projectUrl: 'http://estimatemyjunk.ai',
+    projectUrl: '/dashboard/current-projects',
   },
 ];

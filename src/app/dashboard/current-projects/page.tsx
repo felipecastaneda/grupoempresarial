@@ -1,46 +1,53 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { projects } from "@/lib/data";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
-import Image from "next/image";
-import Link from "next/link";
-import { ArrowUpRight } from "lucide-react";
+"use client";
+
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Apple, Leaf, Sprout } from "lucide-react";
+import { useLanguage } from "@/contexts/language-context";
 
 export default function CurrentProjectsPage() {
+  const { t } = useLanguage();
+
+  const products = [
+    {
+      title: t.snacksTitle,
+      description: t.snacksDescription,
+      icon: Apple,
+      categories: [t.vegetables, t.fruits],
+    },
+    {
+      title: t.dehydratedProductsTitle,
+      description: t.dehydratedProductsDescription,
+      icon: Leaf,
+      categories: [t.vegetables, t.spices, t.fruits],
+    },
+  ];
+
   return (
     <div>
       <p className="text-muted-foreground mb-6">
-        An overview of the innovative projects our teams are currently developing.
+        {t.currentProjectsIntro}
       </p>
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        {projects.map((project) => {
-          const image = PlaceHolderImages.find(p => p.id === project.imageUrlId);
+        {products.map((product) => {
           return (
-            <Card key={project.id} className="flex flex-col">
-              {image && (
-                <div className="relative h-64 w-full">
-                  <Image
-                    src={image.imageUrl}
-                    alt={project.title}
-                    fill
-                    className="object-cover rounded-t-lg"
-                    data-ai-hint={image.imageHint}
-                  />
-                </div>
-              )}
+            <Card key={product.title} className="flex flex-col">
               <CardHeader>
-                <CardTitle>{project.title}</CardTitle>
+                <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-md bg-primary/10 text-primary">
+                  <product.icon className="h-6 w-6" />
+                </div>
+                <CardTitle>{product.title}</CardTitle>
               </CardHeader>
               <CardContent className="flex-grow">
-                <p className="text-muted-foreground">{project.description}</p>
+                <p className="text-muted-foreground">{product.description}</p>
+                <div className="mt-6 flex flex-wrap gap-2">
+                  {product.categories.map((category) => (
+                    <span key={category} className="inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs text-muted-foreground">
+                      <Sprout className="h-3 w-3" />
+                      {category}
+                    </span>
+                  ))}
+                </div>
               </CardContent>
-              <CardFooter>
-                <Button asChild>
-                  <Link href={project.projectUrl} target="_blank" rel="noopener noreferrer">
-                    Visit Project <ArrowUpRight className="mr-2 h-4 w-4" />
-                  </Link>
-                </Button>
-              </CardFooter>
             </Card>
           );
         })}
